@@ -1,0 +1,47 @@
+name: "KDQ-tree Drift Detection"
+acronym: "KDQ"
+version: "1.0"
+type: "multivariate"
+
+description: >
+  KDQ-tree is a neighborhood-based multivariate drift detection method that compares
+  the local distributions of test data and reference data using k-nearest neighbor
+  comparisons. For each reference point, it identifies a neighborhood in both datasets
+  and applies univariate KS tests across all dimensions. The overall drift score is
+  the proportion of neighborhoods showing significant changes.
+
+inputs:
+  reference_data:
+    description: "2D array of historical or baseline multivariate data."
+  test_data:
+    description: "2D array of current or incoming multivariate data to compare against the reference."
+
+parameters:
+  k_neighbors:
+    description: "Number of nearest neighbors used for defining local neighborhoods."
+  ks_method:
+    description: "Method used in the KS test (e.g., 'asymp', 'exact', or 'auto')."
+  alpha:
+    description: >
+      Significance threshold for the average p-value in a neighborhood.
+      A lower alpha increases sensitivity to subtle changes.
+
+output:
+  description: >
+    The KDQ-tree detector returns a score representing the proportion of neighborhoods
+    that exhibit statistically significant distributional change, as well as a boolean
+    drift flag indicating whether the observed changes are large enough to exceed the
+    defined significance threshold.
+
+  fields:
+    score:
+      description: >
+        Proportion of neighborhoods with average KS p-value below alpha. Higher values
+        suggest stronger evidence of distributional shift.
+    drift:
+      description: >
+        Boolean flag indicating whether drift is detected (True if score >= alpha).
+    details:
+      description: >
+        Metadata including the number of neighborhoods evaluated, method settings,
+        and mode of operation (online or offline).

@@ -1,0 +1,48 @@
+name: "PCA-based Change Detection"
+acronym: "PCA-CD"
+version: "1.0"
+type: "multivariate"
+
+description: >
+  PCA-CD (PCA-based Change Detection) detects drift in multivariate data by projecting
+  both reference and test samples into a lower-dimensional PCA space, and then comparing
+  their distributions. Drift is flagged when either the mean of projected components 
+  (CSD) or their variances (KL divergence) exceeds configured thresholds.
+
+inputs:
+  reference_data:
+    description: "2D array of historical multivariate data used as baseline."
+  test_data:
+    description: "2D array of current multivariate data to compare against the reference."
+
+parameters:
+  n_components:
+    description: "Number of principal components used for PCA projection."
+  csd_threshold:
+    description: "Threshold for mean shift detection using cumulative squared differences (CSD)."
+  kl_threshold:
+    description: "Threshold for variance shift detection using symmetric KL divergence."
+
+output:
+  description: >
+    Returns a single drift score computed from both the mean and variance shift
+    in PCA-projected space. Drift is flagged if either CSD or KL exceeds threshold.
+
+  fields:
+    score:
+      description: >
+        A numeric score reflecting the maximum of normalized CSD and KL divergence.
+        A score >= 1.0 indicates detected drift.
+    drift:
+      description: >
+        Boolean flag indicating whether drift was detected (True if score >= 1.0).
+    csd:
+      description: >
+        Cumulative Squared Difference between reference and test projected means.
+    kl:
+      description: >
+        Symmetric KL divergence between reference and test projected variances.
+    csd_threshold:
+      description: "Threshold used for the CSD calculation."
+    kl_threshold:
+      description: "Threshold used for the KL divergence calculation."

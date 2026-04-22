@@ -1,0 +1,51 @@
+name: "Kolmogorov–Smirnov Test"
+acronym: "KS"
+version: "1.0"
+type: "univariate"
+
+description: >
+  The Kolmogorov–Smirnov (KS) test is a non-parametric method for comparing the
+  empirical cumulative distribution functions (ECDFs) of two univariate datasets.
+  It measures the largest absolute difference between the ECDFs. A statistically
+  significant difference (based on a p-value and significance level alpha) is
+  interpreted as drift.
+
+inputs:
+  reference_data:
+    description: >
+      1D array of historical or baseline data. This can be passed once during 
+      initialization or provided dynamically with each call.
+  test_data:
+    description: >
+      1D array of current or incoming observations. In online mode, this data is
+      accumulated internally over successive calls.
+
+parameters:
+  alpha:
+    description: >
+      Significance level for rejecting the null hypothesis of equal distributions.
+      Drift is flagged when the p-value falls below this threshold.
+
+output:
+  description: >
+    The KS detector returns a numeric score (test statistic), p-value, and a
+    boolean drift flag indicating whether a statistically significant change 
+    has been detected between the reference and test distributions.
+
+  fields:
+    score:
+      description: >
+        The KS statistic — the maximum distance between the two ECDFs.
+    p_value:
+      description: >
+        The probability of observing the KS statistic under the null hypothesis 
+        (i.e., no distributional change).
+    drift:
+      description: >
+        Boolean indicating whether drift was detected (True if p-value < alpha).
+    reference_size:
+      description: >
+        Number of samples used in the reference dataset.
+    test_size:
+      description: >
+        Number of samples used in the test dataset.

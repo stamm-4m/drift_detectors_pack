@@ -1,0 +1,41 @@
+name: "ADaptive WINdowing"
+acronym: "ADWIN"
+version: "1.0"
+type: "univariate"
+
+description: >
+  ADaptive WINdowing (ADWIN) is a streaming drift detection algorithm for 
+  univariate data. It maintains a variable-length sliding window and uses 
+  Hoeffding bounds to detect statistically significant changes in the mean 
+  of the incoming data stream. Drift is detected when the average of recent 
+  data differs significantly from older data in the window.
+
+inputs:
+  test_data:
+    description: >
+      A 1D array or individual float value representing one or more new 
+      observations in a data stream.
+
+parameters:
+  delta:
+    description: >
+      Confidence parameter used in the Hoeffding bound to determine 
+      significance of change. Lower values increase sensitivity to smaller shifts.
+
+output:
+  description: >
+    ADWIN returns a boolean indicating whether drift was detected in the most 
+    recent batch of data, the index where the last drift occurred (if any), 
+    and diagnostic metadata.
+
+  fields:
+    last_index:
+      description: >
+        Index (relative to the most recent input batch) where drift was last detected.
+        Returns -1 if no drift occurred.
+    drift:
+      description: >
+        Boolean flag indicating whether drift was detected in the provided data.
+    details:
+      description: >
+        Additional diagnostic information, such as the configured delta value and operating mode.

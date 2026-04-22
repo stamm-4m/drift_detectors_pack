@@ -1,0 +1,45 @@
+name: "Population Stability Index"
+acronym: "PSI"
+version: "1.0"
+type: "univariate"
+
+description: >
+  The Population Stability Index (PSI) measures shifts in the distribution 
+  of a feature between two datasets, typically to monitor changes over time 
+  (e.g., training vs. test sets). It quantifies the divergence between the 
+  reference and test distributions using histogram binning. A higher PSI 
+  score indicates greater distributional drift.
+
+  This detector supports both offline (batch) and online (incremental) modes 
+  depending on how it is configured.
+
+inputs:
+  reference_data:
+    description: "1D array of historical or baseline data."
+  test_data:
+    description: "1D array of current or new data to compare against the reference."
+
+parameters:
+  bins:
+    description: "Number of bins used to discretize the data for histogram comparison."
+  epsilon:
+    description: "Small constant to avoid division by zero or log(0) during PSI calculation."
+  threshold:
+    description: "Drift threshold above which the PSI score is considered significant."
+
+output:
+  description: >
+    The PSI method returns a single numeric score that quantifies the shift
+    between the reference and test distributions. This value increases as
+    the distributions diverge more significantly.
+
+  fields:
+    psi_score:
+      description: >
+        A numeric value representing the Population Stability Index.
+        Values below 0.1 indicate no drift, 0.1–0.25 suggest moderate drift,
+        and values above 0.25 indicate significant drift.
+    drift:
+      description: "Boolean flag indicating whether drift was detected."
+    details:
+      description: "Additional metadata, including bin count, epsilon value, and data sizes."

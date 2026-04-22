@@ -1,0 +1,44 @@
+name: "Maximum Mean Discrepancy"
+acronym: "MMD"
+version: "1.0"
+type: "multivariate"
+
+description: >
+  Maximum Mean Discrepancy (MMD) is a nonparametric kernel-based method 
+  used to detect distributional drift between two multivariate datasets. 
+  It compares the mean embeddings of the distributions in a reproducing 
+  kernel Hilbert space (RKHS) using a kernel function, typically the RBF kernel.
+
+  MMD is useful in scenarios where no distributional assumptions can be made, 
+  especially in high-dimensional or structured data contexts.
+
+inputs:
+  reference_data:
+    description: "Array of reference (baseline) samples."
+  test_data:
+    description: "Array of test samples to be compared against the reference."
+
+parameters:
+  gamma:
+    description: "Bandwidth parameter for the RBF kernel."
+  threshold:
+    description: >
+      Drift threshold for the MMD score. A higher score suggests greater 
+      discrepancy between distributions.
+
+output:
+  description: >
+    Returns a single numeric MMD score quantifying the shift in distribution, 
+    along with a drift flag and optional metadata.
+
+  fields:
+    mmd_score:
+      description: >
+        A numeric value representing the magnitude of drift between reference 
+        and test distributions.
+    drift:
+      description: "Boolean flag indicating whether drift was detected based on the threshold."
+    details:
+      description: >
+        Additional metadata including the gamma value, kernel type used, 
+        and number of samples in each dataset.
