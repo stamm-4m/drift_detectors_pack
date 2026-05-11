@@ -1,0 +1,53 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the following metadata."
+title: "drift_detectors_pack: an open-source toolkit for univariate and multivariate drift detection"
+abstract: >
+  drift_detectors_pack is a Python library that unifies a catalogue of
+  statistical and model-based drift detectors behind a single calculate()
+  interface, supporting batch and streaming workloads. The package is
+  designed to be lightweight, dependency-frugal, and reproducible, making
+  it well suited for research and for MLOps deployments in low- and
+  middle-income contexts.
+type: software
+version: "0.2.0"
+date-released: 2026-05-06
+license: Apache-2.0
+repository-code: "https://gitlab.com/stamm-4m/drift_detectors_pack"
+authors:
+  - family-names: Crowther
+    given-names: Matthew
+    affiliation: Newcastle University
+  - family-names: Metcalfe
+    given-names: Brett
+  - family-names: Koehorst
+    given-names: Jasper
+    affiliation: Wageningen University & Research
+  - family-names: Corrales
+    given-names: David Camilo
+    affiliation: INRAE
+  - family-names: Suárez Muñoz
+    given-names: Carlos Alberto
+keywords:
+  - drift detection
+  - concept drift
+  - data drift
+  - MLOps
+  - AI for development
+  - bioprocess monitoring
+preferred-citation:
+  type: conference-paper
+  title: "drift_detectors_pack: A Lightweight Open-Source Drift Detection Toolkit for AI Deployments in Low-Resource Settings"
+  authors:
+    - family-names: Corrales
+      given-names: David Camilo
+    - family-names: Crowther
+      given-names: Matthew
+    - family-names: Metcalfe
+      given-names: Brett
+    - family-names: Koehorst
+      given-names: Jasper
+    - family-names: Suárez Muñoz
+      given-names: Carlos Alberto
+  conference:
+    name: "AI4D 2026 — 2nd Workshop on Artificial Intelligence for Development, CAEPIA 2026"
+  year: 2026

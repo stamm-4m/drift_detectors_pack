@@ -1,0 +1,38 @@
+name: "Page-Hinkley"
+acronym: "PH"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  The Page-Hinkley test is a sequential change-point detector that tracks the
+  cumulative deviation of incoming observations from a running mean. A drift
+  is signalled when this cumulative deviation exceeds a threshold (lambda),
+  after a tolerance (delta) has been subtracted from each step. Useful for
+  monitoring smoothly drifting univariate streams (e.g. sensor signals).
+
+inputs:
+  test_data:
+    description: "Streaming univariate observations (scalar, list, or 1-D array)."
+
+parameters:
+  delta:
+    description: "Allowed magnitude of changes before flagging drift."
+  lambda_:
+    description: "Detection threshold; lower values increase sensitivity."
+  alpha:
+    description: "Forgetting factor for the running mean (0 < alpha <= 1)."
+
+output:
+  description: >
+    Streaming result indicating the index at which drift was last triggered.
+  fields:
+    last_index:
+      description: "Offset within the most-recent batch where drift was raised, or -1."
+    drift:
+      description: "Boolean flag indicating whether a drift was raised in this batch."
+    details:
+      description: "Configured parameters and observation count."
+
+references:
+  - "Page, E. S. (1954). Continuous inspection schemes. Biometrika 41(1/2), 100-115."

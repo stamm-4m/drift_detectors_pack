@@ -1,0 +1,30 @@
+name: "Disagreement Metrics (catalogue)"
+acronym: "disagreement_metrics"
+version: "1.0"
+type: "model_based"
+mode: "batch"
+
+description: >
+  A catalogue of pair-wise model-disagreement metrics that can be plugged
+  into the ModelDisagreementMetric (MDM) module. Each concrete metric
+  subclasses DisagreementMetric and implements
+  pair(y_i, y_j, scale) -> float in [0, 1]. Users can turn metrics on or
+  off, register custom metrics, or use the default trio (MSE, Pearson,
+  Spearman). This mirrors the way drift detectors are organised in the
+  package.
+
+inputs:
+  predictions:
+    description: "Two prediction vectors of equal length to compare."
+
+shipped_metrics:
+  MSEDisagreement:
+    description: "Root-MSE between two prediction vectors, scale-normalised."
+  PearsonDisagreement:
+    description: "(1 - Pearson linear correlation) / 2, in [0, 1]."
+  SpearmanDisagreement:
+    description: "(1 - Spearman rank correlation) / 2, in [0, 1]."
+
+references:
+  - "Suarez, C. et al. (2026). STAMM: Soft sensor moniToring and mAintenance
+     framework for Machine learning Models. SoftwareX (under review)."

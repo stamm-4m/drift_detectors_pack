@@ -1,0 +1,41 @@
+name: "Early Drift Detection Method"
+acronym: "EDDM"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  EDDM monitors the distance between consecutive errors in a binary error
+  stream. Early drift is signalled when the running statistic mu + 2*sigma
+  drops sufficiently below its historical maximum, indicating that the model
+  is producing errors more closely together than before. EDDM is commonly
+  used downstream of an online classifier; it can also be applied to a
+  thresholded residual signal of any predictive model.
+
+inputs:
+  test_data:
+    description: "Binary error indicators (0 = correct, 1 = error) or values
+                  thresholded at 0.5."
+
+parameters:
+  warning_level:
+    description: "Ratio threshold under which a warning is raised."
+  drift_level:
+    description: "Ratio threshold under which drift is signalled."
+  min_n_errors:
+    description: "Minimum number of accumulated errors required before drift can fire."
+
+output:
+  description: >
+    Streaming result indicating where drift was raised in the most-recent batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean drift flag for the batch."
+    details.warning:
+      description: "True if a pre-drift warning was raised in this batch."
+
+references:
+  - "Baena-García, M. et al. (2006). Early drift detection method.
+    ECML PKDD Workshop on Knowledge Discovery from Data Streams."

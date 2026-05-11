@@ -1,0 +1,39 @@
+name: "Hoeffding Drift Detection Method (A-test)"
+acronym: "HDDM-A"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  HDDM-A monitors a univariate stream by maintaining a long-term mean estimator
+  and a short-term (cut-point) mean estimator, and signals drift whenever their
+  difference exceeds the Hoeffding inequality bound at the chosen confidence
+  level. The detector also raises a "warning" status one step before drift to
+  allow downstream systems to prepare an adaptation step.
+
+inputs:
+  test_data:
+    description: "Streaming univariate observations (scalar, list, or 1-D array)."
+
+parameters:
+  drift_confidence:
+    description: "Confidence level for drift detection (smaller = stricter)."
+  warning_confidence:
+    description: "Confidence level for raising a warning before drift."
+  two_sided:
+    description: "If true, detect both increases and decreases of the mean."
+
+output:
+  description: >
+    Streaming result indicating where drift was raised in the most-recent batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean drift flag for the batch."
+    details.warning:
+      description: "True if a pre-drift warning was raised in this batch."
+
+references:
+  - "Frías-Blanco, I. et al. (2015). Online and non-parametric drift detection
+    methods based on Hoeffding's bounds. IEEE TKDE 27(3), 810-823."

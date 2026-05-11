@@ -1,0 +1,44 @@
+name: "Model Disagreement Metric"
+acronym: "MDM"
+version: "1.1"
+type: "model_based"
+mode: "batch"
+
+description: >
+  Pair-wise output-level disagreement detector for ensembles of co-deployed
+  predictive models. Designed for the soft-sensor regime in which fresh
+  ground-truth labels arrive offline hours-to-days late, so residual-based
+  monitoring is unavailable. MDM is a pluggable orchestrator: the set of
+  pair-wise statistics is supplied by ``metrics=[...]`` (a list of
+  DisagreementMetric instances; default trio is MSE + Pearson + Spearman).
+  Users can turn metrics on or off, or register their own by subclassing
+  DisagreementMetric.
+
+inputs:
+  predictions:
+    description: "Sequence of >=2 1-D NumPy arrays, one per co-deployed model.
+                  All arrays must have the same length."
+
+parameters:
+  metrics:
+    description: "Sequence of DisagreementMetric instances; default is
+                  [MSEDisagreement(), PearsonDisagreement(), SpearmanDisagreement()]."
+  threshold:
+    description: "Aggregate disagreement above which drift is flagged."
+
+output:
+  description: >
+    Aggregate disagreement score in [0, 1], plus per-metric and pair-wise
+    breakdowns in the details dict.
+  fields:
+    score:        { description: "Mean over metrics of the mean over pairs." }
+    drift:        { description: "True iff aggregate >= threshold." }
+    details.metric_means: { description: "Mean disagreement per metric." }
+    details.pairwise:     { description: "NxN symmetric matrix per metric." }
+
+references:
+  - "Suarez, C. et al. (2026). STAMM: Soft sensor moniToring and mAintenance
+     framework for Machine learning Models. SoftwareX (under review)."
+  - "Bayram, F., Aslan, M. A., Aksu, S. (2022). From concept drift to model
+     degradation: an overview on performance-aware drift detectors.
+     Knowledge-Based Systems 245, 108632."

@@ -1,46 +1,105 @@
-[tool.poetry]
-name = "stamm-drift-detectors"
-version = "0.1.1"
-description = "STAMM Drift Detectors"
-authors = [
-    "Matthew Crowther <nmc215ncl.ac.uk>",
-    "Brett Metcalfe <brett.metcalfe@hotmail.co.uk>",
-    "Jasper Koehorst <jasper.koehorst@wur.nl>",
-    "David Camilo Corrales <David-Camilo.Corrales-Munoz@inrae.fr>",
-    "Carlos Alberto Suarez Muñoz <csuarez@gmail.com>"
-]
-license = "Apache-2.0"
-readme = "README.md"
-repository = "https://gitlab.com/stamm-4m/drift_detectors_pack"
-
-packages = [
-    { include = "drift_detectors" }
-]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-numpy = "2.2.5"
-PyYAML = "6.0.2"
-river = "0.22.0"
-scikit_learn = "1.6.1"
-scipy = "1.15.2"
-setuptools = "75.1.0"
-
-[tool.poetry.group.test.dependencies]
-pytest-xdist = "^3.6.1"
-pytest = "^8.3.4"
-coverage = "^7.6.8"
-mypy = "^1.14.1"
-
-[tool.poetry.group.dev.dependencies]
-bump2version = "^1.0.1"
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stamm-drift-detectors"
+version = "0.2.0"
+description = "Open-source drift detection toolkit for univariate and multivariate data, with batch and streaming detectors. Designed for low-resource MLOps deployments and reproducible scientific research."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Matthew Crowther", email = "nmc215@ncl.ac.uk" },
+    { name = "Brett Metcalfe",   email = "brett.metcalfe@hotmail.co.uk" },
+    { name = "Jasper Koehorst",  email = "jasper.koehorst@wur.nl" },
+    { name = "David Camilo Corrales", email = "David-Camilo.Corrales-Munoz@inrae.fr" },
+    { name = "Carlos Alberto Suarez Muñoz", email = "csuarez@gmail.com" },
+]
+keywords = [
+    "drift detection",
+    "concept drift",
+    "data drift",
+    "MLOps",
+    "monitoring",
+    "AI for development",
+    "bioprocess",
+    "machine learning",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-learn>=1.2",
+    "PyYAML>=6.0",
+    "river>=0.21",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.1",
+    "pytest-xdist>=3.6",
+    "mypy>=1.8",
+    "ruff>=0.6",
+    "build>=1.0",
+]
+benchmark = [
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "psutil>=5.9",
+    "tabulate>=0.9",
+]
+docs = [
+    "sphinx>=7.0",
+    "furo>=2024.1",
+    "myst-parser>=2.0",
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/stamm-4m/drift_detectors_pack"
+Repository = "https://gitlab.com/stamm-4m/drift_detectors_pack"
+Issues = "https://gitlab.com/stamm-4m/drift_detectors_pack/-/issues"
+
+[tool.setuptools.packages.find]
+include = ["drift_detectors*"]
+exclude = ["tests*", "use_cases*", "benchmarks*"]
+
+[tool.setuptools.package-data]
+drift_detectors = ["**/*.yaml", "**/*.md"]
 
 [tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-ra --strict-markers"
 log_cli = true
-log_cli_level = "DEBUG"
+log_cli_level = "INFO"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests against real datasets",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_unused_ignores = true

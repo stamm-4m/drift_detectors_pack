@@ -1,0 +1,162 @@
+{
+  "batch_100.0": {
+    "n_samples": 1146,
+    "R2_A": -17.729229709108775,
+    "MAE_A": 12.1054719838608,
+    "MSE_A": 234.06487319883217,
+    "RMSE_A": 15.2991788406709,
+    "R2_B": -11.353658581899031,
+    "PSI_input_T": 0.06732874935210334,
+    "KS_input_T_pvalue": 4.950919447656951e-06,
+    "PSI_predicted_Y": 1.0136466128782748,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 513,
+    "MDM_score": 0.5804958190179758,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.39725554226366394,
+      "spearman": 0.3442319147902635
+    }
+  },
+  "batch_91.0": {
+    "n_samples": 1286,
+    "R2_A": -7.102993725984396,
+    "MAE_A": 6.265940956440989,
+    "MSE_A": 48.83966265511012,
+    "RMSE_A": 6.988537948320101,
+    "R2_B": -38.17671797835068,
+    "PSI_input_T": 0.20903774656731106,
+    "KS_input_T_pvalue": 1.1709968748913768e-07,
+    "PSI_predicted_Y": 7.19477202273516,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 517,
+    "MDM_score": 0.7269905322468032,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.5785219531037229,
+      "spearman": 0.6024496436366864
+    }
+  },
+  "batch_94.0": {
+    "n_samples": 1146,
+    "R2_A": -5.055733366546243,
+    "MAE_A": 6.553885636930224,
+    "MSE_A": 92.57748801352565,
+    "RMSE_A": 9.621719597531705,
+    "R2_B": -5.062343922645031,
+    "PSI_input_T": 0.7807061954102653,
+    "KS_input_T_pvalue": 2.0216634269172118e-38,
+    "PSI_predicted_Y": 3.7240086663264296,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 468,
+    "MDM_score": 0.6036976221856927,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.4370485070067591,
+      "spearman": 0.374044359550319
+    }
+  },
+  "batch_95.0": {
+    "n_samples": 1051,
+    "R2_A": -0.2817224360438315,
+    "MAE_A": 3.516875061527343,
+    "MSE_A": 16.40921836804272,
+    "RMSE_A": 4.050829343238582,
+    "R2_B": -7.4577942142505425,
+    "PSI_input_T": 0.1599542510864468,
+    "KS_input_T_pvalue": 9.28258469730897e-14,
+    "PSI_predicted_Y": 7.160471412316019,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 25,
+    "MDM_score": 0.6202664069325494,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.42316685287614764,
+      "spearman": 0.4376323679215005
+    }
+  },
+  "batch_96.0": {
+    "n_samples": 1146,
+    "R2_A": 0.7138741261937468,
+    "MAE_A": 4.381736375734351,
+    "MSE_A": 26.441727725771624,
+    "RMSE_A": 5.1421520519887025,
+    "R2_B": 0.14736094683620504,
+    "PSI_input_T": 0.8206871343907349,
+    "KS_input_T_pvalue": 5.101740942536889e-12,
+    "PSI_predicted_Y": 3.9567969577094626,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 345,
+    "MDM_score": 0.5244746999831414,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.33424118260742686,
+      "spearman": 0.23918291734199731
+    }
+  },
+  "batch_97.0": {
+    "n_samples": 1121,
+    "R2_A": 0.6609682517093015,
+    "MAE_A": 4.215663481428363,
+    "MSE_A": 23.324112999910387,
+    "RMSE_A": 4.829504425912703,
+    "R2_B": 0.20802131552492542,
+    "PSI_input_T": 0.20911532864723598,
+    "KS_input_T_pvalue": 8.164812390193225e-11,
+    "PSI_predicted_Y": 0.689618795578731,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 364,
+    "MDM_score": 0.43563559457335715,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.15111111110020037,
+      "spearman": 0.1557956726198711
+    }
+  },
+  "batch_98.0": {
+    "n_samples": 1146,
+    "R2_A": 0.8699082569841028,
+    "MAE_A": 3.4774248234186933,
+    "MSE_A": 17.139248083448706,
+    "RMSE_A": 4.139957497782882,
+    "R2_B": 0.1019551832199792,
+    "PSI_input_T": 0.07158984850030177,
+    "KS_input_T_pvalue": 8.488758226920896e-07,
+    "PSI_predicted_Y": 0.524060484289993,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 129,
+    "MDM_score": 0.5140299173275759,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.3074590575406444,
+      "spearman": 0.23463069444208295
+    }
+  },
+  "batch_99.0": {
+    "n_samples": 1251,
+    "R2_A": -6.956133833147286,
+    "MAE_A": 8.581423517177349,
+    "MSE_A": 127.09159902156696,
+    "RMSE_A": 11.273490986449891,
+    "R2_B": -9.213562309948081,
+    "PSI_input_T": 0.7845942267044484,
+    "KS_input_T_pvalue": 6.912546781333532e-12,
+    "PSI_predicted_Y": 1.8017179087104453,
+    "EDDM_residual_drift": true,
+    "EDDM_residual_n_err": 597,
+    "MDM_score": 0.6183866386120566,
+    "MDM_drift": true,
+    "MDM_metrics": {
+      "mse": 1.0,
+      "pearson": 0.45706932198537165,
+      "spearman": 0.3980905938507979
+    }
+  }
+}
