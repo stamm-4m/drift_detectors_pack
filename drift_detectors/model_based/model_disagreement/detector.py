@@ -142,21 +142,40 @@ class ModelDisagreementMetric(DriftDetector):
                     per_metric_values[m.name].append(v)
                     pair_matrices[m.name][i, j] = pair_matrices[m.name][j, i] = v
 
-        # Aggregate: mean over metrics of mean over pairs.
+        # Per-metric means (over pairs)
         per_metric_means: Dict[str, float] = {
             n: float(np.mean(v)) if v else 0.0 for n, v in per_metric_values.items()
         }
-        aggregate = float(np.mean(list(per_metric_means.values()))) if per_metric_means else 0.0
+
+        # Aggregate BY KIND: mean over metrics of the same family, never across.
+        # ``score_by_kind`` is the user-facing summary -- one number per family.
+        kind_buckets: Dict[str, List[float]] = {}
+        for m in self._metrics:
+            kind_buckets.setdefault(m.kind, []).append(per_metric_means[m.name])
+        score_by_kind: Dict[str, float] = {
+            k: float(np.mean(vs)) if vs else 0.0 for k, vs in kind_buckets.items()
+        }
+        # Headline ``score`` field: the error-family aggregate. The error
+        # family answers the operational question -- "are the soft sensors
+        # producing the same number?". Correlation-family disagreements
+        # are reported separately in ``details['score_by_kind']`` and as a
+        # complementary signal in the per-metric breakdown.
+        primary = score_by_kind.get("error")
+        if primary is None:
+            # No error-family metrics configured -- fall back to the largest
+            # per-kind aggregate so that ``score`` and ``drift`` stay meaningful.
+            primary = max(score_by_kind.values()) if score_by_kind else 0.0
 
         return ScoreDriftResult(
-            score=aggregate,
-            drift=aggregate >= thr,
+            score=float(primary),
+            drift=float(primary) >= thr,
             details={
                 "threshold": thr,
                 "n_models": n_models,
                 "n_samples": n_samples,
                 "metrics": list(per_metric_means.keys()),
                 "metric_means": per_metric_means,
+                "score_by_kind": score_by_kind,
                 "pairwise": {n: pair_matrices[n].tolist() for n in pair_matrices},
                 "mode": "online" if self.is_online() else "offline",
             },

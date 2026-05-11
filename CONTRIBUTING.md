@@ -7,7 +7,7 @@ to add a new drift detector to the catalogue.
 ## Development setup
 
 ```bash
-git clone https://gitlab.com/stamm-4m/drift_detectors_pack.git
+git clone https://github.com/stamm-4m/drift_detectors_pack.git
 cd drift_detectors_pack
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate

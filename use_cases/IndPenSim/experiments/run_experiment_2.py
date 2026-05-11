@@ -69,8 +69,16 @@ def _r2(y, yh):
     ss_res = float(np.sum((y - yh) ** 2))
     ss_tot = float(np.sum((y - y.mean()) ** 2))
     return float("nan") if ss_tot < 1e-12 else 1 - ss_res / ss_tot
-def _mae(y, yh):  return float(np.mean(np.abs(y - yh)))
-def _rmse(y, yh): return float(math.sqrt(np.mean((y - yh) ** 2)))
+
+
+def _mae(y, yh):
+    return float(np.mean(np.abs(y - yh)))
+
+
+def _rmse(y, yh):
+    return float(math.sqrt(np.mean((y - yh) ** 2)))
+
+
 def _cv(y, yh):
     m = float(np.mean(y))
     return float("nan") if abs(m) < 1e-12 else _rmse(y, yh) / m
@@ -95,18 +103,24 @@ def main():
         for ph, (t0, t1) in PHASES.items():
             X, y = phase_data(df, b, t0, t1)
             if X.size:
-                Xs.append(X); ys.append(y)
-    X_train = np.vstack(Xs); y_train = np.concatenate(ys)
+                Xs.append(X)
+                ys.append(y)
+    X_train = np.vstack(Xs)
+    y_train = np.concatenate(ys)
     rng = np.random.default_rng(0)
     if len(X_train) > 5000:
         idx = rng.choice(len(X_train), size=5000, replace=False)
         X_train, y_train = X_train[idx], y_train[idx]
     print(f"training rows: {len(X_train):,}")
 
-    print("   training CART ...");     M_cart   = CART(max_depth=8, min_samples_leaf=20).fit(X_train, y_train)
-    print("   training M5 ...");       M_m5     = M5(max_depth=4, min_samples_leaf=100).fit(X_train, y_train)
-    print("   training CUBIST ...");   M_cubist = CUBIST(max_depth=4, min_samples_leaf=100).fit(X_train, y_train)
-    print("   training RF ...");       M_rf     = RandomForest(n_trees=15, max_depth=8, min_samples_leaf=20).fit(X_train, y_train)
+    print("   training CART ...")
+    M_cart = CART(max_depth=8, min_samples_leaf=20).fit(X_train, y_train)
+    print("   training M5 ...")
+    M_m5 = M5(max_depth=4, min_samples_leaf=100).fit(X_train, y_train)
+    print("   training CUBIST ...")
+    M_cubist = CUBIST(max_depth=4, min_samples_leaf=100).fit(X_train, y_train)
+    print("   training RF ...")
+    M_rf = RandomForest(n_trees=15, max_depth=8, min_samples_leaf=20).fit(X_train, y_train)
     models = {"CART": M_cart, "M5": M_m5, "CUBIST": M_cubist, "RF": M_rf}
 
     rows = []
@@ -118,17 +132,19 @@ def main():
             preds = {n: m.predict(X) for n, m in models.items()}
             perf = {n: {"CV": _cv(y, p), "MAE": _mae(y, p), "RMSE": _rmse(y, p)}
                     for n, p in preds.items()}
-            idx = np.arange(len(y))[:, None].astype(float)
-            mdm = ModelDisagreementMetric(
-                models=[(lambda I, p=preds[n]: p) for n in preds],
-                threshold=0.10,
-            ).calculate(idx)
-            rows.append({
-                "batch": b, "phase": ph, "n": int(len(y)),
+            mdm = ModelDisagreementMetric(threshold=0.10).calculate(
+                predictions=[preds[n] for n in preds]
+            )
+            row = {
+                "batch": b,
+                "phase": ph,
+                "n": int(len(y)),
                 "perf": perf,
                 "MDM_score": float(mdm.score),
+                "MDM_score_by_kind": mdm.details["score_by_kind"],
                 "MDM_metrics": mdm.details["metric_means"],
-            })
+            }
+            rows.append(row)
     OUT.write_text(json.dumps(rows, indent=2, default=str))
     print(f"wrote {OUT}")
 

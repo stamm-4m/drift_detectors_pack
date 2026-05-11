@@ -12,6 +12,7 @@ class MSEDisagreement(DisagreementMetric):
     "fraction of the typical prediction spread".
     """
     name = "mse"
+    kind = "error"
 
     def pair(self, y_i, y_j, *, scale=1.0):
         rmse = float(np.sqrt(np.mean((y_i - y_j) ** 2)))

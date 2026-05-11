@@ -1,6 +1,6 @@
 name: "Model Disagreement Metric"
 acronym: "MDM"
-version: "1.1"
+version: "1.2"
 type: "model_based"
 mode: "batch"
 
@@ -12,7 +12,10 @@ description: >
   pair-wise statistics is supplied by ``metrics=[...]`` (a list of
   DisagreementMetric instances; default trio is MSE + Pearson + Spearman).
   Users can turn metrics on or off, or register their own by subclassing
-  DisagreementMetric.
+  DisagreementMetric. Each metric declares a ``kind`` (currently ``"error"``
+  or ``"correlation"``); MDM aggregates per kind and never averages across
+  kinds, because magnitude errors and correlation-based disagreements are
+  dimensionally and conceptually inhomogeneous.
 
 inputs:
   predictions:
@@ -24,21 +27,32 @@ parameters:
     description: "Sequence of DisagreementMetric instances; default is
                   [MSEDisagreement(), PearsonDisagreement(), SpearmanDisagreement()]."
   threshold:
-    description: "Aggregate disagreement above which drift is flagged."
+    description: "Disagreement above which drift is flagged. Compared against
+                  the error-family aggregate (score field)."
 
 output:
   description: >
-    Aggregate disagreement score in [0, 1], plus per-metric and pair-wise
+    Per-kind aggregate disagreement in [0, 1], plus per-metric and pair-wise
     breakdowns in the details dict.
   fields:
-    score:        { description: "Mean over metrics of the mean over pairs." }
-    drift:        { description: "True iff aggregate >= threshold." }
-    details.metric_means: { description: "Mean disagreement per metric." }
-    details.pairwise:     { description: "NxN symmetric matrix per metric." }
+    score:
+      description: >
+        Error-family aggregate -- the mean over error-kind metrics of the
+        mean over pairs. Used as the operational drift signal.
+    drift:
+      description: "True iff score (error family) >= threshold."
+    details.score_by_kind:
+      description: >
+        Dict mapping each kind in use (e.g. error, correlation) to its
+        per-kind aggregate.
+    details.metric_means:
+      description: "Mean disagreement per individual metric."
+    details.pairwise:
+      description: "NxN symmetric matrix per metric."
 
 references:
   - "Suarez, C. et al. (2026). STAMM: Soft sensor moniToring and mAintenance
      framework for Machine learning Models. SoftwareX (under review)."
-  - "Bayram, F., Aslan, M. A., Aksu, S. (2022). From concept drift to model
+  - "Bayram, F., Ahmed, B. S., Kassler, A. (2022). From concept drift to model
      degradation: an overview on performance-aware drift detectors.
      Knowledge-Based Systems 245, 108632."

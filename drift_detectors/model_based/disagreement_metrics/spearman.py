@@ -20,5 +20,7 @@ def _rankdata(a):
 
 class SpearmanDisagreement(DisagreementMetric):
     name = "spearman"
+    kind = "correlation"
+
     def pair(self, y_i, y_j, *, scale=1.0):
         return float(np.clip(1.0 - _pearson(_rankdata(y_i), _rankdata(y_j)), 0.0, 2.0)) / 2.0

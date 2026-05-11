@@ -19,8 +19,8 @@ except ImportError as exc:  # pragma: no cover
 from benchmarks.runner import BenchmarkCase
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_REF_DIR = REPO_ROOT / "use_cases" / "indepensim_data" / "reference_data"
-DEFAULT_TEST_DIR = REPO_ROOT / "use_cases" / "indepensim_data" / "test_data"
+DEFAULT_REF_DIR = REPO_ROOT / "use_cases" / "IndPenSim" / "data" / "reference"
+DEFAULT_TEST_DIR = REPO_ROOT / "use_cases" / "IndPenSim" / "data" / "test"
 
 DEFAULT_PROCESS_VARS = [
     "penicillin_concentration",

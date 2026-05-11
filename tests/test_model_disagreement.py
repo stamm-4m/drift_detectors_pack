@@ -60,11 +60,29 @@ class TestModelDisagreementMetric(unittest.TestCase):
     def test_user_defined_metric(self) -> None:
         class MeanAbsDiff(DisagreementMetric):
             name = "mean_abs"
+            kind = "error"
             def pair(self, a, b, *, scale=1.0):
                 return float(min(np.mean(np.abs(a - b)) / max(scale, 1e-12), 1.0))
         det = ModelDisagreementMetric(metrics=[MeanAbsDiff()])
         res = det.calculate(predictions=[self._y(0.1), self._y(0.5)])
         self.assertIn("mean_abs", res.details["metric_means"])
+
+    def test_score_by_kind(self) -> None:
+        """The detector should aggregate metrics by kind (error / correlation)
+        and never average across families.
+        """
+        det = ModelDisagreementMetric()
+        res = det.calculate(predictions=[self._y(0.1), self._y(1.0, scale=1.2, bias=1.0)])
+        self.assertIn("score_by_kind", res.details)
+        self.assertIn("error",       res.details["score_by_kind"])
+        self.assertIn("correlation", res.details["score_by_kind"])
+        # The headline `score` is the error-family aggregate.
+        self.assertAlmostEqual(res.score, res.details["score_by_kind"]["error"], places=8)
+
+    def test_kind_attribute_on_default_metrics(self) -> None:
+        det = ModelDisagreementMetric()
+        kinds = {m.name: m.kind for m in det._metrics}
+        self.assertEqual(kinds, {"mse": "error", "pearson": "correlation", "spearman": "correlation"})
 
     def test_pairwise_matrix_shape(self) -> None:
         preds = [self._y(s) for s in (0.1, 0.5, 1.0, 0.3)]

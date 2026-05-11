@@ -115,21 +115,30 @@ for x in stream:
         ...
 ```
 
-## Reproducible benchmarks
+## Reproducing the AI4D 2026 paper
 
-The `benchmarks/` module provides a `BenchmarkRunner` that evaluates any
-detector against any labelled dataset and reports detection rate, runtime,
-and memory in a single CSV. The IndPenSim case study is wired in by default:
+The full case study lives at
+[`use_cases/IndPenSim/`](use_cases/IndPenSim/), with its own README, a
+fetcher script for the upstream Goldrick dataset, the two paper experiments
+as runnable scripts, and the per-batch result tables in
+[`use_cases/IndPenSim/results/README.md`](use_cases/IndPenSim/results/README.md):
 
 ```bash
-python -m benchmarks.run_indpensim --detectors all --output results/
+# 1. fetch the 100-batch IndPenSim CSV (~21 MB)
+python use_cases/IndPenSim/data/download_indpensim.py
+
+# 2. run the two paper experiments
+python -m use_cases.IndPenSim.experiments.run_experiment_1
+python -m use_cases.IndPenSim.experiments.run_experiment_2
+
+# 3. (optional) regenerate the paper figures
+python use_cases/IndPenSim/figures/make_class_diagram.py
+python use_cases/IndPenSim/figures/make_fault_timelines.py
 ```
 
-The full case study reported in the AI4D 2026 paper lives at
-[`use_cases/IndPenSim/`](use_cases/IndPenSim/), with its own README, fetcher
-script for the upstream dataset, per-experiment runnable scripts, and the
-per-batch result tables (S0–S3) in
-[`use_cases/IndPenSim/results/README.md`](use_cases/IndPenSim/results/README.md).
+A general-purpose `BenchmarkRunner` lives in [`benchmarks/`](benchmarks/) for
+evaluating any detector against any labelled dataset --- not used by the paper
+protocol but documented in [`benchmarks/README.md`](benchmarks/README.md).
 
 
 ## Architecture

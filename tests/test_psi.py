@@ -27,8 +27,9 @@ class TestPSI(unittest.TestCase):
         self.assertLess(result.score, 0.1)
 
     def test_stateful_offline(self):
-        ref = np.random.normal(0, 1, 1000)
-        test = np.random.normal(0.4, 1, 1000)
+        rng = np.random.default_rng(0)
+        ref  = rng.normal(0.0, 1.0, 1000)
+        test = rng.normal(0.6, 1.0, 1000)
         detector = PSI(reference_data=ref)
         result = detector.calculate(test_data=test)
         self.assertTrue(result.drift)

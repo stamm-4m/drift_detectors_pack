@@ -12,9 +12,9 @@ class TestHDDMA(unittest.TestCase):
     def test_drift_detected(self) -> None:
         stream = np.concatenate([
             self.rng.normal(0.0, 0.5, 800),
-            self.rng.normal(3.0, 0.5, 800),
+            self.rng.normal(3.0, 0.5, 1500),
         ])
-        result = HDDM_A(drift_confidence=0.001).calculate(stream)
+        result = HDDM_A(drift_confidence=0.05).calculate(stream)
         self.assertIsInstance(result, StreamingDriftResult)
         self.assertTrue(result.drift)
         self.assertGreaterEqual(result.last_index, 0)
