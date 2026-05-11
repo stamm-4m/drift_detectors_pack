@@ -1,0 +1,282 @@
+[
+  {
+    "phase": "lag",
+    "batch": 91,
+    "MMD_med": 0.16417095260008896,
+    "PCA_CD": 85931.65805439277,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "lag",
+    "batch": 92,
+    "MMD_med": 0.08873027260323951,
+    "PCA_CD": 3352110.5060135745,
+    "KDQ_Tree": 0.9865
+  },
+  {
+    "phase": "lag",
+    "batch": 93,
+    "MMD_med": 0.02967881633053837,
+    "PCA_CD": 651546.6372832027,
+    "KDQ_Tree": 0.9985
+  },
+  {
+    "phase": "lag",
+    "batch": 94,
+    "MMD_med": 0.02474270517049937,
+    "PCA_CD": 509491.27961908584,
+    "KDQ_Tree": 0.999
+  },
+  {
+    "phase": "lag",
+    "batch": 95,
+    "MMD_med": 0.09274563443491046,
+    "PCA_CD": 1776668.0940060744,
+    "KDQ_Tree": 0.989
+  },
+  {
+    "phase": "lag",
+    "batch": 96,
+    "MMD_med": 0.02975088061936426,
+    "PCA_CD": 626482.2021977024,
+    "KDQ_Tree": 0.9965
+  },
+  {
+    "phase": "lag",
+    "batch": 97,
+    "MMD_med": 0.09562944004737961,
+    "PCA_CD": 756285.9969778442,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "lag",
+    "batch": 98,
+    "MMD_med": 0.01636798748556223,
+    "PCA_CD": 139037.14520804246,
+    "KDQ_Tree": 0.9895
+  },
+  {
+    "phase": "lag",
+    "batch": 99,
+    "MMD_med": 0.40839942931254425,
+    "PCA_CD": 22719004.432438396,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "lag",
+    "batch": 100,
+    "MMD_med": 0.02338474120021261,
+    "PCA_CD": 299781.18797387934,
+    "KDQ_Tree": 0.9925
+  },
+  {
+    "phase": "log",
+    "batch": 91,
+    "MMD_med": 0.03899689900129233,
+    "PCA_CD": 73703361.44747064,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 92,
+    "MMD_med": 0.003915177407857406,
+    "PCA_CD": 13490590.987774735,
+    "KDQ_Tree": 0.968
+  },
+  {
+    "phase": "log",
+    "batch": 93,
+    "MMD_med": 0.008881431207887536,
+    "PCA_CD": 4253810.15304995,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 94,
+    "MMD_med": 0.0012498351830805277,
+    "PCA_CD": 4196665.463572577,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 95,
+    "MMD_med": 0.04857780638664844,
+    "PCA_CD": 84589995.76599084,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 96,
+    "MMD_med": 0.023462454582366288,
+    "PCA_CD": 39227895.56887972,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 97,
+    "MMD_med": 0.0013483254538830813,
+    "PCA_CD": 647697.0684238715,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 98,
+    "MMD_med": 0.006530197528880732,
+    "PCA_CD": 13285150.119196609,
+    "KDQ_Tree": 0.984
+  },
+  {
+    "phase": "log",
+    "batch": 99,
+    "MMD_med": 0.05011661821449076,
+    "PCA_CD": 105363210.11636917,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "log",
+    "batch": 100,
+    "MMD_med": 0.012944478092878242,
+    "PCA_CD": 12985289.921109831,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 91,
+    "MMD_med": 0.460198421751709,
+    "PCA_CD": 434180180.11177677,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 92,
+    "MMD_med": 0.018339733707675165,
+    "PCA_CD": 6537864.13402858,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 93,
+    "MMD_med": 0.161674148478556,
+    "PCA_CD": 99838790.05270605,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 94,
+    "MMD_med": 0.09815072183637152,
+    "PCA_CD": 66332265.97618647,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 95,
+    "MMD_med": 0.49817890991403235,
+    "PCA_CD": 486997063.2110025,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 96,
+    "MMD_med": 0.19950853046752148,
+    "PCA_CD": 123420306.48209706,
+    "KDQ_Tree": 0.9985
+  },
+  {
+    "phase": "stationary",
+    "batch": 97,
+    "MMD_med": 0.024478875454388094,
+    "PCA_CD": 10642097.369969519,
+    "KDQ_Tree": 0.9935
+  },
+  {
+    "phase": "stationary",
+    "batch": 98,
+    "MMD_med": 0.06715340112461576,
+    "PCA_CD": 30970288.629811622,
+    "KDQ_Tree": 0.992
+  },
+  {
+    "phase": "stationary",
+    "batch": 99,
+    "MMD_med": 0.47381262367970234,
+    "PCA_CD": 458331373.58258885,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "stationary",
+    "batch": 100,
+    "MMD_med": 0.012065495107619784,
+    "PCA_CD": 2478679.5209421734,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 91,
+    "MMD_med": 0.8642563850307851,
+    "PCA_CD": 934090567.3461028,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 92,
+    "MMD_med": 0.13931648509456074,
+    "PCA_CD": 18007780.08073792,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 93,
+    "MMD_med": 0.846559820778198,
+    "PCA_CD": 592382740.3486753,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 94,
+    "MMD_med": 0.2953214409200029,
+    "PCA_CD": 153874729.8325121,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 95,
+    "MMD_med": 0.8020393521374111,
+    "PCA_CD": 527080374.03094417,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 96,
+    "MMD_med": 0.2281915671349255,
+    "PCA_CD": 101847967.345816,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 97,
+    "MMD_med": 0.158432077483871,
+    "PCA_CD": 67698636.20141736,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 98,
+    "MMD_med": 0.09695193560082083,
+    "PCA_CD": 4388342.3334751995,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 99,
+    "MMD_med": 0.8396471317106683,
+    "PCA_CD": 758614531.9566132,
+    "KDQ_Tree": 1.0
+  },
+  {
+    "phase": "death",
+    "batch": 100,
+    "MMD_med": 0.13609661182260036,
+    "PCA_CD": 38322091.390498824,
+    "KDQ_Tree": 1.0
+  }
+]

@@ -9,24 +9,35 @@ abstract: >
   it well suited for research and for MLOps deployments in low- and
   middle-income contexts.
 type: software
-version: "0.2.0"
+version: "0.4.0"
 date-released: 2026-05-06
 license: Apache-2.0
-repository-code: "https://gitlab.com/stamm-4m/drift_detectors_pack"
+repository-code: "https://github.com/stamm-4m/drift_detectors_pack"
 authors:
+  - family-names: Galindez
+    given-names: Elizabeth
+    affiliation: "Universidad Icesi"
   - family-names: Crowther
     given-names: Matthew
-    affiliation: Newcastle University
+    affiliation: "Newcastle University"
   - family-names: Metcalfe
     given-names: Brett
+    affiliation: "Vrije Universiteit Amsterdam"
   - family-names: Koehorst
-    given-names: Jasper
-    affiliation: Wageningen University & Research
+    given-names: Jasper J.
+    affiliation: "Wageningen University & Research"
+  - family-names: Astudillo
+    given-names: Alexander
+    affiliation: "INRAE TWB"
+  - family-names: Suarez Munoz
+    given-names: Carlos Alberto
+    affiliation: "Universidad del Cauca"
+  - family-names: Daboussi
+    given-names: Fayza
+    affiliation: "Toulouse Biotechnology Institute"
   - family-names: Corrales
     given-names: David Camilo
-    affiliation: INRAE
-  - family-names: Suárez Muñoz
-    given-names: Carlos Alberto
+    affiliation: "Toulouse Biotechnology Institute / INRAE"
 keywords:
   - drift detection
   - concept drift
@@ -36,18 +47,24 @@ keywords:
   - bioprocess monitoring
 preferred-citation:
   type: conference-paper
-  title: "drift_detectors_pack: A Lightweight Open-Source Drift Detection Toolkit for AI Deployments in Low-Resource Settings"
+  title: "A drift detection toolkit for soft-sensor monitoring in industrial processes: a penicillin fermentation use case"
   authors:
-    - family-names: Corrales
-      given-names: David Camilo
+    - family-names: Galindez
+      given-names: Elizabeth
     - family-names: Crowther
       given-names: Matthew
     - family-names: Metcalfe
       given-names: Brett
     - family-names: Koehorst
-      given-names: Jasper
-    - family-names: Suárez Muñoz
+      given-names: Jasper J.
+    - family-names: Astudillo
+      given-names: Alexander
+    - family-names: Suarez Munoz
       given-names: Carlos Alberto
+    - family-names: Daboussi
+      given-names: Fayza
+    - family-names: Corrales
+      given-names: David Camilo
   conference:
     name: "AI4D 2026 — 2nd Workshop on Artificial Intelligence for Development, CAEPIA 2026"
   year: 2026

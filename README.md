@@ -9,20 +9,30 @@ framework into which this package is integrated.
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python >= 3.10](https://img.shields.io/badge/python-%3E%3D3.10-blue.svg)](https://www.python.org/)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-green.svg)](.github/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.3.0-orange.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.4.0-orange.svg)](pyproject.toml)
 
-## What's in v0.3.0
+## What's new in 0.4.0
 
-* Ten unified detectors behind a single `DriftDetector.calculate()` interface.
-* New **Model Disagreement Metric** (`MDM`) for soft-sensor regimes where
-  ground-truth labels are delayed, mirroring the STAMM model-divergence panel.
-* Three new pure-NumPy streaming detectors (`PageHinkley`, `HDDM_A`, `EDDM`)
-  that remove a transitive dependency on `scikit-multiflow`.
-* `MMDDetector` now supports `gamma='median'` (median-distance heuristic),
-  which we show is essential for unscaled industrial data.
-* Reproducible benchmarking harness (`benchmarks/`) with built-in IndPenSim
-  loaders and an LSTM-style soft-sensor experiment.
-* New [`ARCHITECTURE.md`](ARCHITECTURE.md) for developers and integrators.
+* The **Model Disagreement Metric** (`MDM`) is now a pluggable orchestrator: pass
+  `metrics=[...]` with any combination of `MSEDisagreement`,
+  `PearsonDisagreement`, `SpearmanDisagreement`, or your own subclass of
+  `DisagreementMetric`. The new API takes a list of prediction arrays
+  (`predictions=[y1, y2, ...]`) rather than model callables, matching the
+  STAMM model registry's per-batch export format.
+* `MMDDetector` ships a `gamma='median'` option (median-distance heuristic),
+  essential for unscaled industrial data with mixed-scale features.
+* Three pure-NumPy streaming detectors (`PageHinkley`, `HDDM_A`, `EDDM`)
+  remove a transitive dependency on `scikit-multiflow`.
+* New **IndPenSim use case** at `use_cases/IndPenSim/` that reproduces the
+  experiments of the AI4D 2026 / CAEPIA 2026 companion paper, including a
+  pure-NumPy reimplementation of the four interpretable soft sensors of
+  Acosta-Pavas et al. (2024): CART, M5, CUBIST and Random Forest.
+* New per-phase methodology: each detector is run independently in the four
+  canonical fermentation phases (lag, log/exponential, stationary, death),
+  respecting the non-stationarity of fed-batch fermentation.
+* New [`ARCHITECTURE.md`](ARCHITECTURE.md) and a self-describing
+  `metadata.yaml` for every detector.
+
 
 ## Why this package?
 
@@ -62,7 +72,7 @@ the catalogue without special-casing.
 pip install stamm-drift-detectors
 
 # from source, editable
-git clone https://gitlab.com/stamm-4m/drift_detectors_pack.git
+git clone https://github.com/stamm-4m/drift_detectors_pack.git
 cd drift_detectors_pack
 pip install -e ".[dev,benchmark]"
 ```
@@ -113,14 +123,14 @@ and memory in a single CSV. The IndPenSim case study is wired in by default:
 
 ```bash
 python -m benchmarks.run_indpensim --detectors all --output results/
-python benchmarks/soft_sensor.py            # LSTM-style soft-sensor experiment
 ```
 
-A companion paper (AI4D 2026 / CAEPIA 2026) describes the design choices,
-discusses the new MDM detector, and reports two experiments: a wide
-multi-detector sweep on IndPenSim and a soft-sensor degradation experiment
-that reproduces the protocol of Metcalfe *et al.* (2025) on faulty test
-batches 91–100.
+The full case study reported in the AI4D 2026 paper lives at
+[`use_cases/IndPenSim/`](use_cases/IndPenSim/), with its own README, fetcher
+script for the upstream dataset, per-experiment runnable scripts, and the
+per-batch result tables (S0–S3) in
+[`use_cases/IndPenSim/results/README.md`](use_cases/IndPenSim/results/README.md).
+
 
 ## Architecture
 

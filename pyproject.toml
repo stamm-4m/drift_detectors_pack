@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "stamm-drift-detectors"
-version = "0.2.0"
+version = "0.4.0"
 description = "Open-source drift detection toolkit for univariate and multivariate data, with batch and streaming detectors. Designed for low-resource MLOps deployments and reproducible scientific research."
 readme = "README.md"
 license = { text = "Apache-2.0" }
@@ -67,9 +67,9 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://gitlab.com/stamm-4m/drift_detectors_pack"
-Repository = "https://gitlab.com/stamm-4m/drift_detectors_pack"
-Issues = "https://gitlab.com/stamm-4m/drift_detectors_pack/-/issues"
+Homepage = "https://github.com/stamm-4m/drift_detectors_pack"
+Repository = "https://github.com/stamm-4m/drift_detectors_pack"
+Issues = "https://github.com/stamm-4m/drift_detectors_pack/issues"
 
 [tool.setuptools.packages.find]
 include = ["drift_detectors*"]
