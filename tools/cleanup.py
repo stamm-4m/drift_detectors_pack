@@ -1,8 +1,7 @@
 """Cross-platform cleanup: delete the zero-byte placeholder files left by
 the repo-alignment pass, then remove any directories that become empty.
 
-Background. After aligning the repository with the final 12-page AI4D 2026
-paper, a number of files were superseded:
+Background. After aligning the repository with the companion SoftwareX paper, a number of files were superseded:
   - the old use_cases/indepensim_data/ folder (now use_cases/IndPenSim/data/test/)
   - the top-level results/ folder (now use_cases/IndPenSim/results/)
   - the legacy results/legacy/ artifacts from earlier iterations

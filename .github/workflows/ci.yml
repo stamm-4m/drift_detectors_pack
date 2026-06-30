@@ -53,9 +53,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff mypy
       - name: Ruff
-        run: ruff check drift_detectors
+        run: ruff check src/drift_detectors
       - name: MyPy
-        run: mypy --ignore-missing-imports drift_detectors
+        run: mypy --ignore-missing-imports src/drift_detectors
 
   build:
     name: Build distribution

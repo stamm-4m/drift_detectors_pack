@@ -41,8 +41,8 @@ Run the full suite in parallel with `pytest -n auto`.
 
 ## Adding a new detector
 
-1. Create a folder under `drift_detectors/univariate/` or
-   `drift_detectors/multivariate/` named after your method (snake_case).
+1. Create a folder under `src/drift_detectors/univariate/` or
+   `src/drift_detectors/multivariate/` named after your method (snake_case).
 2. Add three files:
    - `detector.py` — class inheriting from
      `drift_detectors.drift_detector.DriftDetector`. Implement

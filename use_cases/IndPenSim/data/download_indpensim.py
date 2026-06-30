@@ -1,6 +1,6 @@
 """Download the IndPenSim 100-batch dataset from Mendeley Data.
 
-The reference set used in the AI4D 2026 paper experiments is batches 1-60
+The reference set used in the companion paper experiments is batches 1-60
 of this dataset. The dataset is published under Creative Commons Attribution
 4.0 by Goldrick et al. (2019).
 
@@ -54,7 +54,7 @@ def main():
         print(f"  then save 100_Batches_IndPenSim_V3.1.csv to {out}")
         sys.exit(1)
     print(f"done. {out.stat().st_size / 1e6:.1f} MB")
-    print("Reference batches for the AI4D 2026 paper experiments are IDs 1-60.")
+    print("Reference batches for the companion paper experiments are IDs 1-60.")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Regenerate fig_class_diagram.png (Fig. 2 of the AI4D 2026 paper).
+"""Regenerate fig_class_diagram.png (class-diagram figure of the companion SoftwareX paper).
 
 Produces the layered class diagram of drift_detectors_pack:
 - DriftDetector (ABC) -> ScoreDriftResult / StreamingDriftResult /

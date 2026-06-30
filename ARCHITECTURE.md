@@ -1,7 +1,7 @@
 # drift_detectors_pack — Architecture
 
 This document complements the README with the architectural detail referenced
-from Section 3 of the AI4D 2026 companion paper. It is aimed at developers
+from the Software description section of the companion SoftwareX paper. It is aimed at developers
 adding a new detector and at platform engineers integrating the package
 into a wider MLOps stack such as STAMM (https://stamm.inrae.fr).
 
@@ -140,7 +140,7 @@ does).
 
 ## 5. Adding a new detector
 
-1. Create a folder under `drift_detectors/<family>/<your_name>/`.
+1. Create a folder under `src/drift_detectors/<family>/<your_name>/`.
 2. Add `detector.py` — class subclassing `DriftDetector`, implementing
    `calculate(...)` and returning the appropriate result dataclass.
 3. Add `metadata.yaml` — follow the schema in §3.

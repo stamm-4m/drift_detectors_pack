@@ -3,12 +3,8 @@
 This use case applies `drift_detectors_pack` to the
 [IndPenSim](https://data.mendeley.com/datasets/pdnjz7zz5x/1) dataset, an
 industrial-scale fed-batch fermentation simulator and dataset published by
-Goldrick *et al.* (2015, 2019). It is the case study reported in the
-companion paper, which is being submitted to:
-
-> **AI4D 2026 — 2nd Workshop on Artificial Intelligence for Development**,
-> co-located with the **2026 Conference of the Spanish Association for
-> Artificial Intelligence (CAEPIA 2026)**.
+Goldrick *et al.* (2015, 2019). It is the case study reported in the companion SoftwareX paper, an
+Original Software Publication describing `drift_detectors_pack`.
 
 The paper analyses the ten faulty test batches (91–100) of the LSTM soft
 sensor of Metcalfe *et al.* (2025) against the same training set
@@ -100,13 +96,13 @@ See `results/README.md` for the full per-batch tables.
 
 ## Citing
 
-If you use this use case, please cite the AI4D 2026 paper:
+If you use this use case, please cite the companion SoftwareX paper:
 
 ```
-Galindez, E., Crowther, M., Metcalfe, B., Koehorst, J. J., Astudillo, A.,
-Suarez Munoz, C. A., Daboussi, F., Corrales, D. C.: A drift detection
-toolkit for soft-sensor monitoring in industrial processes: a penicillin
-fermentation use case. AI4D 2026 / CAEPIA 2026 (under review).
+Galindez, E., Crowther, M., Metcalfe, B., Koehorst, J. J.,
+Aristizabal Morales, S., Suarez, C., Daboussi, F., Corrales, D. C.:
+drift_detectors_pack: A unified drift detection toolkit for soft sensor
+monitoring in industrial bioprocesses. SoftwareX (under review).
 ```
 
 and the upstream IndPenSim dataset:

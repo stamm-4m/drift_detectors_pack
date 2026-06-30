@@ -1,4 +1,4 @@
-# IndPenSim experiments — AI4D 2026 paper
+# IndPenSim experiments — companion SoftwareX paper
 
 Two scripts reproduce the paper's two experiments. Both write JSON to
 `use_cases/IndPenSim/results/`.

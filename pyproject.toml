@@ -22,7 +22,6 @@ keywords = [
     "data drift",
     "MLOps",
     "monitoring",
-    "AI for development",
     "bioprocess",
     "machine learning",
 ]
@@ -72,8 +71,8 @@ Repository = "https://github.com/stamm-4m/drift_detectors_pack"
 Issues = "https://github.com/stamm-4m/drift_detectors_pack/issues"
 
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["drift_detectors*"]
-exclude = ["tests*", "use_cases*", "benchmarks*"]
 
 [tool.setuptools.package-data]
 drift_detectors = ["**/*.yaml", "**/*.md"]

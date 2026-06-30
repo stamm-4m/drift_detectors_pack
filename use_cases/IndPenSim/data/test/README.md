@@ -1,6 +1,6 @@
 # IndPenSim test batches 91–100
 
-The ten test batches used in the AI4D 2026 paper experiments. Each CSV
+The ten test batches used in the companion paper experiments. Each CSV
 contains the full per-minute trace of one batch (~1100 rows, 31 columns).
 The schema matches the upstream IndPenSim 100-batch dataset
 (`100_Batches_IndPenSim_V3.1.csv`).

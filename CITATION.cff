@@ -6,8 +6,7 @@ abstract: >
   statistical and model-based drift detectors behind a single calculate()
   interface, supporting batch and streaming workloads. The package is
   designed to be lightweight, dependency-frugal, and reproducible, making
-  it well suited for research and for MLOps deployments in low- and
-  middle-income contexts.
+  it well suited for research and for MLOps deployments.
 type: software
 version: "0.4.0"
 date-released: 2026-05-06
@@ -26,9 +25,9 @@ authors:
   - family-names: Koehorst
     given-names: Jasper J.
     affiliation: "Wageningen University & Research"
-  - family-names: Astudillo
-    given-names: Alexander
-    affiliation: "INRAE TWB"
+  - family-names: Aristizabal Morales
+    given-names: Santiago
+    affiliation: "Universidad Icesi"
   - family-names: Suarez Munoz
     given-names: Carlos Alberto
     affiliation: "Universidad del Cauca"
@@ -43,11 +42,10 @@ keywords:
   - concept drift
   - data drift
   - MLOps
-  - AI for development
   - bioprocess monitoring
 preferred-citation:
-  type: conference-paper
-  title: "A drift detection toolkit for soft-sensor monitoring in industrial processes: a penicillin fermentation use case"
+  type: article
+  title: "drift_detectors_pack: A unified drift detection toolkit for soft sensor monitoring in industrial bioprocesses"
   authors:
     - family-names: Galindez
       given-names: Elizabeth
@@ -57,14 +55,14 @@ preferred-citation:
       given-names: Brett
     - family-names: Koehorst
       given-names: Jasper J.
-    - family-names: Astudillo
-      given-names: Alexander
-    - family-names: Suarez Munoz
-      given-names: Carlos Alberto
+    - family-names: Aristizabal Morales
+      given-names: Santiago
+    - family-names: Suarez
+      given-names: Carlos
     - family-names: Daboussi
       given-names: Fayza
     - family-names: Corrales
       given-names: David Camilo
-  conference:
-    name: "AI4D 2026 — 2nd Workshop on Artificial Intelligence for Development, CAEPIA 2026"
+  journal: "SoftwareX"
+  notes: "Under review"
   year: 2026

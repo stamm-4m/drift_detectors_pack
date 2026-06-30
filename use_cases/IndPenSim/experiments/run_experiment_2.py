@@ -1,4 +1,4 @@
-"""Experiment 2 of the AI4D 2026 paper.
+"""Experiment 2 of the companion SoftwareX paper.
 
 Model Disagreement Metric (MDM) across four interpretable soft sensors
 (CART, M5, CUBIST, Random Forest) trained on the LSTM training set

@@ -24,7 +24,7 @@ framework into which this package is integrated.
 * Three pure-NumPy streaming detectors (`PageHinkley`, `HDDM_A`, `EDDM`)
   remove a transitive dependency on `scikit-multiflow`.
 * New **IndPenSim use case** at `use_cases/IndPenSim/` that reproduces the
-  experiments of the AI4D 2026 / CAEPIA 2026 companion paper, including a
+  experiments of the companion SoftwareX paper, including a
   pure-NumPy reimplementation of the four interpretable soft sensors of
   Acosta-Pavas et al. (2024): CART, M5, CUBIST and Random Forest.
 * New per-phase methodology: each detector is run independently in the four
@@ -42,9 +42,8 @@ responsible model maintenance, but the existing ecosystem is fragmented
 across libraries with very different APIs, dependency trees, and quality of
 documentation. The fragmentation is particularly costly in operating regimes
 where ground-truth labels arrive offline hours-to-days late (industrial
-soft sensors, telemedicine triage, low-cost sensor networks), and in
-deployments where small dependency footprints matter — e.g. AI deployments
-in low- and middle-income contexts.
+soft sensors in bioprocesses) and in deployments where small dependency
+footprints matter.
 
 `drift_detectors_pack` unifies a curated catalogue of detectors behind a
 single `DriftDetector.calculate()` interface and ships a self-describing
@@ -115,7 +114,7 @@ for x in stream:
         ...
 ```
 
-## Reproducing the AI4D 2026 paper
+## Reproducing the paper experiments
 
 The full case study lives at
 [`use_cases/IndPenSim/`](use_cases/IndPenSim/), with its own README, a
@@ -161,14 +160,15 @@ detector.
 ## Citing
 
 ```bibtex
-@inproceedings{corrales2026driftdetectors,
-  title     = {drift\_detectors\_pack: An Open-Source Drift Detection Toolkit
-               for Soft-Sensor Monitoring in Industrial Bioprocesses},
-  author    = {Corrales, David Camilo and Crowther, Matthew and Metcalfe, Brett and
-               Koehorst, Jasper J. and Su\'arez Mu\~noz, Carlos Alberto},
-  booktitle = {Proceedings of the 2nd Workshop on Artificial Intelligence for
-               Development (AI4D 2026), CAEPIA 2026},
-  year      = {2026}
+@article{galindez2026driftdetectors,
+  title   = {drift\_detectors\_pack: A unified drift detection toolkit for
+             soft sensor monitoring in industrial bioprocesses},
+  author  = {Galindez, Elizabeth and Crowther, Matthew and Metcalfe, Brett and
+             Koehorst, Jasper J. and Aristizabal Morales, Santiago and
+             Su\'arez, Carlos and Daboussi, Fayza and Corrales, David Camilo},
+  journal = {SoftwareX},
+  year    = {2026},
+  note    = {Under review}
 }
 ```
 

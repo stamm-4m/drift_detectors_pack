@@ -1,8 +1,8 @@
 # Supplementary results: per-batch, per-phase drift tables
 
-These tables expand the in-text Tables 1 and 2 of the AI4D 2026 paper
-(*A drift detection toolkit for soft-sensor monitoring in industrial
-processes: a penicillin fermentation use case*) to all ten test batches
+These tables expand the in-text Tables 1 and 2 of the companion SoftwareX paper
+(*drift_detectors_pack: A unified drift detection toolkit for soft sensor
+monitoring in industrial bioprocesses*) to all ten test batches
 (91-100) and all four canonical fermentation phases. Table 1 in the paper
 itself reports only the three representative fault batches
 (substrate-feed 91 and 95; aeration 94); the remaining seven batches

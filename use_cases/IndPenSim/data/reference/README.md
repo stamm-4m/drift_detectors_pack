@@ -1,6 +1,6 @@
 # Reference set: IndPenSim batches 1–60
 
-This folder is the destination of the reference set used in the AI4D 2026
+This folder is the destination of the reference set used in the companion SoftwareX
 paper experiments — the LSTM training set of Metcalfe *et al.* (2025),
 batches 1–60 of the IndPenSim dataset.
 

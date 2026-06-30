@@ -1,4 +1,4 @@
-"""Experiment 1 of the AI4D 2026 paper.
+"""Experiment 1 of the companion SoftwareX paper.
 
 Drift detectors over the input distribution of test batches 91-100, computed
 INDEPENDENTLY in each of the four canonical fermentation phases (lag, log,

@@ -1,4 +1,4 @@
-"""Regenerate fig_fault_timelines.png (Fig. 3 of the AI4D 2026 paper).
+"""Regenerate fig_fault_timelines.png (fault-timeline figure of the companion SoftwareX paper).
 
 Plots, for each of the 10 test batches (91-100), the four diagnostic
 process variables of IndPenSim in real units:
