@@ -13,8 +13,6 @@ error signal.
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from drift_detectors.drift_detector import DriftDetector
@@ -95,8 +93,8 @@ class EDDM(DriftDetector):
     def calculate(
         self,
         test_data: np.ndarray,
-        warning_level: Optional[float] = None,
-        drift_level: Optional[float] = None,
+        warning_level: float | None = None,
+        drift_level: float | None = None,
     ) -> StreamingDriftResult:
         """
         Update the detector with a batch of error indicators and return

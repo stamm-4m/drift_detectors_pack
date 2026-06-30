@@ -11,8 +11,6 @@ level. This implementation is pure-numpy.
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from drift_detectors.drift_detector import DriftDetector
@@ -86,8 +84,8 @@ class HDDM_A(DriftDetector):
     def calculate(
         self,
         test_data: np.ndarray,
-        drift_confidence: Optional[float] = None,
-        warning_confidence: Optional[float] = None,
+        drift_confidence: float | None = None,
+        warning_confidence: float | None = None,
     ) -> StreamingDriftResult:
         """
         Update the detector with a batch of observations and return the

@@ -1,4 +1,5 @@
 import numpy as np
+
 from drift_detectors.drift_detector import DriftDetector
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 

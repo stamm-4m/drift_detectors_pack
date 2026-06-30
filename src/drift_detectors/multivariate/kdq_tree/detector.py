@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial import KDTree
-from scipy.stats import ks_2samp, combine_pvalues
+from scipy.stats import combine_pvalues, ks_2samp
 
 from drift_detectors.drift_detector import DriftDetector
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
@@ -57,7 +57,7 @@ class KDQTree(DriftDetector):
         test_neighbors_idx = tree_test.query(ref, k=self.k_neighbors)[1]
 
         p_values = []
-        for ref_idx, test_idx in zip(ref_neighbors_idx, test_neighbors_idx):
+        for ref_idx, test_idx in zip(ref_neighbors_idx, test_neighbors_idx, strict=False):
             ref_patch = ref[ref_idx]
             test_patch = test[test_idx]
             dim_p = [

@@ -1,6 +1,8 @@
 """Output-magnitude disagreement, scale-normalised."""
 from __future__ import annotations
+
 import numpy as np
+
 from drift_detectors.model_based.disagreement_metrics.base import DisagreementMetric
 
 

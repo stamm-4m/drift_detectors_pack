@@ -46,10 +46,7 @@ class Adwin(DriftDetector):
                 self._adwin = AW_ALG(delta=self._delta)
 
         # Choose detector instance depending on online/offline mode
-        if self.is_online():
-            detector = self._adwin
-        else:
-            detector = AW_ALG(delta=self._delta)
+        detector = self._adwin if self.is_online() else AW_ALG(delta=self._delta)
 
         test_data = np.asarray(test_data).ravel()
         drift_flag = False

@@ -1,16 +1,18 @@
 from __future__ import annotations
-import os
+
 import inspect
+import os
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
+
 import numpy as np
 import yaml
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = Path(os.path.join(curr_dir))
 
-def load_metadata_for_class(detector_cls) -> Dict[str, Any]:
+def load_metadata_for_class(detector_cls) -> dict[str, Any]:
     """
     Load `meta.yaml` or `metadata.yaml` next to the detector’s Python file.
     Returns {} if no metadata is found.
@@ -24,7 +26,7 @@ def load_metadata_for_class(detector_cls) -> Dict[str, Any]:
     return {}
 
 
-def get_metadata() -> Dict[str, Dict[str, Any]]:
+def get_metadata() -> dict[str, dict[str, Any]]:
     """
     Recursively scan for 'metadata.yaml' files and return all detector metadata.
 
@@ -47,7 +49,7 @@ def get_metadata() -> Dict[str, Dict[str, Any]]:
 
             metadata_dict[file.parent.name  ] = data
 
-        except Exception as e:
+        except Exception:
             pass
 
     return metadata_dict
@@ -62,8 +64,8 @@ class DriftDetector(ABC):
 
     def __init__(
         self,
-        reference_data: Optional[np.ndarray] = None,
-        online: Optional[bool] = False,
+        reference_data: np.ndarray | None = None,
+        online: bool | None = False,
     ) -> None:
         """
         Initialize the drift detector.
@@ -100,7 +102,7 @@ class DriftDetector(ABC):
     def calculate(
         self,
         test_data: np.ndarray,
-        reference_data: Optional[np.ndarray] = None,
+        reference_data: np.ndarray | None = None,
         **kwargs: Any,
     ):
         """

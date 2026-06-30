@@ -19,18 +19,22 @@ simulations rather than the model objects themselves: it removes a
 heavy coupling between the monitoring layer and the model registry.
 """
 from __future__ import annotations
-from typing import Any, Dict, List, Optional, Sequence
+
+from collections.abc import Sequence
 
 import numpy as np
 
 from drift_detectors.drift_detector import DriftDetector
-from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 from drift_detectors.model_based.disagreement_metrics import (
-    DisagreementMetric, MSEDisagreement, PearsonDisagreement, SpearmanDisagreement,
+    DisagreementMetric,
+    MSEDisagreement,
+    PearsonDisagreement,
+    SpearmanDisagreement,
 )
+from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 
 
-def _default_metrics() -> List[DisagreementMetric]:
+def _default_metrics() -> list[DisagreementMetric]:
     """Default trio: magnitude (MSE), linear correlation, rank correlation."""
     return [MSEDisagreement(), PearsonDisagreement(), SpearmanDisagreement()]
 
@@ -61,14 +65,14 @@ class ModelDisagreementMetric(DriftDetector):
 
     def __init__(
         self,
-        metrics: Optional[Sequence[DisagreementMetric]] = None,
+        metrics: Sequence[DisagreementMetric] | None = None,
         threshold: float = 0.25,
         online: bool = False,
         # legacy parameter kept for backwards compatibility:
-        models: Optional[Sequence] = None,
+        models: Sequence | None = None,
     ) -> None:
         super().__init__(reference_data=None, online=online)
-        self._metrics: List[DisagreementMetric] = list(metrics) if metrics else _default_metrics()
+        self._metrics: list[DisagreementMetric] = list(metrics) if metrics else _default_metrics()
         self._threshold = float(threshold)
         # ``models`` is not used by the new predictions API; we keep the
         # parameter on the constructor signature so that pre-v0.4.0 user
@@ -81,15 +85,15 @@ class ModelDisagreementMetric(DriftDetector):
         self._metrics.append(metric)
 
     @property
-    def metric_names(self) -> List[str]:
+    def metric_names(self) -> list[str]:
         return [m.name for m in self._metrics]
 
     def calculate(
         self,
-        test_data: Optional[np.ndarray] = None,
-        reference_data: Optional[np.ndarray] = None,
-        predictions: Optional[Sequence[np.ndarray]] = None,
-        threshold: Optional[float] = None,
+        test_data: np.ndarray | None = None,
+        reference_data: np.ndarray | None = None,
+        predictions: Sequence[np.ndarray] | None = None,
+        threshold: float | None = None,
     ) -> ScoreDriftResult:
         """Compute pair-wise model disagreement.
 
@@ -130,10 +134,10 @@ class ModelDisagreementMetric(DriftDetector):
             scale = 1.0
 
         # Per-pair, per-metric matrix
-        pair_matrices: Dict[str, np.ndarray] = {
+        pair_matrices: dict[str, np.ndarray] = {
             m.name: np.zeros((n_models, n_models), dtype=float) for m in self._metrics
         }
-        per_metric_values: Dict[str, List[float]] = {m.name: [] for m in self._metrics}
+        per_metric_values: dict[str, list[float]] = {m.name: [] for m in self._metrics}
         for i in range(n_models):
             for j in range(i + 1, n_models):
                 a, b = preds[i], preds[j]
@@ -143,16 +147,16 @@ class ModelDisagreementMetric(DriftDetector):
                     pair_matrices[m.name][i, j] = pair_matrices[m.name][j, i] = v
 
         # Per-metric means (over pairs)
-        per_metric_means: Dict[str, float] = {
+        per_metric_means: dict[str, float] = {
             n: float(np.mean(v)) if v else 0.0 for n, v in per_metric_values.items()
         }
 
         # Aggregate BY KIND: mean over metrics of the same family, never across.
         # ``score_by_kind`` is the user-facing summary -- one number per family.
-        kind_buckets: Dict[str, List[float]] = {}
+        kind_buckets: dict[str, list[float]] = {}
         for m in self._metrics:
             kind_buckets.setdefault(m.kind, []).append(per_metric_means[m.name])
-        score_by_kind: Dict[str, float] = {
+        score_by_kind: dict[str, float] = {
             k: float(np.mean(vs)) if vs else 0.0 for k, vs in kind_buckets.items()
         }
         # Headline ``score`` field: the error-family aggregate. The error

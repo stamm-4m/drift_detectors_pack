@@ -1,6 +1,6 @@
 import numpy as np
-from sklearn.decomposition import PCA
 from scipy.stats import entropy
+from sklearn.decomposition import PCA
 
 from drift_detectors.drift_detector import DriftDetector
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult

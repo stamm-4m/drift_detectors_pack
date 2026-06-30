@@ -1,6 +1,7 @@
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any
 
 
 @dataclass
@@ -10,15 +11,15 @@ class ScoreDriftResult:
     """
     score: float
     drift: bool
-    details: Dict[str, Any] = field(default_factory=dict)
+    details: dict[str, Any] = field(default_factory=dict)
 
 @dataclass
 class PointwiseDriftResult:
     """
     List of dataset indices (or timestamps) where drift/change points occur.
     """
-    indices: List[int]
-    details: Dict[str, Any] = field(default_factory=dict)
+    indices: list[int]
+    details: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -28,4 +29,4 @@ class StreamingDriftResult:
     """
     last_index: int
     drift: bool
-    details: Dict[str, Any] = field(default_factory=dict)
+    details: dict[str, Any] = field(default_factory=dict)

@@ -11,28 +11,27 @@ Quick start
 (True, ...)
 """
 from drift_detectors.drift_detector import DriftDetector, get_metadata
-from drift_detectors.utility.drift_detection_output import (
-    PointwiseDriftResult, ScoreDriftResult, StreamingDriftResult,
+from drift_detectors.model_based.disagreement_metrics import (
+    DisagreementMetric,
+    MSEDisagreement,
+    PearsonDisagreement,
+    SpearmanDisagreement,
 )
-
-# Univariate
+from drift_detectors.model_based.model_disagreement.detector import ModelDisagreementMetric
+from drift_detectors.multivariate.kdq_tree.detector import KDQTree
+from drift_detectors.multivariate.mmd.detector import MMDDetector
+from drift_detectors.multivariate.pca_cd.detector import PCA_CD
 from drift_detectors.univariate.adwin.detector import Adwin
 from drift_detectors.univariate.eddm.detector import EDDM
 from drift_detectors.univariate.hddm_a.detector import HDDM_A
 from drift_detectors.univariate.ks.detector import KSDetector
 from drift_detectors.univariate.page_hinkley.detector import PageHinkley
 from drift_detectors.univariate.psi.detector import PSI
-
-# Multivariate
-from drift_detectors.multivariate.kdq_tree.detector import KDQTree
-from drift_detectors.multivariate.mmd.detector import MMDDetector
-from drift_detectors.multivariate.pca_cd.detector import PCA_CD
-
-# Model-based (v0.4.0+: pluggable disagreement metrics, predictions API)
-from drift_detectors.model_based.disagreement_metrics import (
-    DisagreementMetric, MSEDisagreement, PearsonDisagreement, SpearmanDisagreement,
+from drift_detectors.utility.drift_detection_output import (
+    PointwiseDriftResult,
+    ScoreDriftResult,
+    StreamingDriftResult,
 )
-from drift_detectors.model_based.model_disagreement.detector import ModelDisagreementMetric
 
 __all__ = [
     "DriftDetector", "get_metadata",

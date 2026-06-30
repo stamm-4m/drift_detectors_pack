@@ -10,8 +10,6 @@ follows the conventional formulation used by river / scikit-multiflow.
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from drift_detectors.drift_detector import DriftDetector
@@ -67,8 +65,8 @@ class PageHinkley(DriftDetector):
     def calculate(
         self,
         test_data: np.ndarray,
-        delta: Optional[float] = None,
-        lambda_: Optional[float] = None,
+        delta: float | None = None,
+        lambda_: float | None = None,
     ) -> StreamingDriftResult:
         """
         Feed observations into the Page-Hinkley test and return the

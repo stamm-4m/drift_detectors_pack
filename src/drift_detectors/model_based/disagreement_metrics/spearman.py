@@ -1,6 +1,8 @@
 """Pair-wise (1 - Spearman rank correlation) / 2 disagreement."""
 from __future__ import annotations
+
 import numpy as np
+
 from drift_detectors.model_based.disagreement_metrics.base import DisagreementMetric
 from drift_detectors.model_based.disagreement_metrics.pearson import _pearson
 
