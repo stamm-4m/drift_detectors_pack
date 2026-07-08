@@ -2,6 +2,7 @@ name: "Maximum Mean Discrepancy"
 acronym: "MMD"
 version: "1.0"
 type: "multivariate"
+mode: "batch"
 
 description: >
   Maximum Mean Discrepancy (MMD) is a nonparametric kernel-based method 
@@ -42,3 +43,6 @@ output:
       description: >
         Additional metadata including the gamma value, kernel type used, 
         and number of samples in each dataset.
+
+references:
+  - "Gretton, A., Borgwardt, K. M., Rasch, M. J., Scholkopf, B., & Smola, A. (2012). A kernel two-sample test. Journal of Machine Learning Research 13, 723-773."

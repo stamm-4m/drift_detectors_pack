@@ -1,0 +1,36 @@
+name: "Reactive Drift Detection Method"
+acronym: "RDDM"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  A reactive DDM variant with more sensitive thresholds and periodic re-baselining of the error-rate minimum when a concept stays stable too long. Binary error stream.
+
+inputs:
+  test_data:
+    description: "Batch of stream observations (consumed one at a time)."
+
+parameters:
+  min_instances:
+    description: "Minimum observations before drift can be raised."
+  warning_level:
+    description: "Std multiplier for the warning zone."
+  drift_level:
+    description: "Std multiplier for the drift zone."
+  max_concept_size:
+    description: "Stable length after which the baseline is recomputed."
+
+output:
+  description: >
+    Streaming result: the index at which drift was last raised in the batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean flag, True if drift was raised in this batch."
+    details:
+      description: "warning flag, metric name and detector state."
+
+references:
+  - "Barros, R. S. M., Cabral, D. R. L., Goncalves, P. M., & Santos, S. G. T. C. (2017). RDDM: Reactive drift detection method. Expert Systems with Applications 90, 344-355."

@@ -1,11 +1,11 @@
 import numpy as np
-from river.drift import ADWIN as AW_ALG
 
 from drift_detectors.drift_detector import DriftDetector
+from drift_detectors.utility._adwin import ADWIN as AW_ALG
 from drift_detectors.utility.drift_detection_output import StreamingDriftResult
 
 
-class Adwin(DriftDetector):
+class ADWIN(DriftDetector):
     """
     ADWIN Drift Detector (univariate, streaming).
 
@@ -70,3 +70,7 @@ class Adwin(DriftDetector):
                 "mode": "online" if self.is_online() else "offline",
             },
         )
+
+
+# Backward-compatible alias (pre-0.5 name)
+Adwin = ADWIN

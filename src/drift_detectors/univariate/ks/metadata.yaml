@@ -2,6 +2,7 @@ name: "Kolmogorov–Smirnov Test"
 acronym: "KS"
 version: "1.0"
 type: "univariate"
+mode: "batch"
 
 description: >
   The Kolmogorov–Smirnov (KS) test is a non-parametric method for comparing the
@@ -49,3 +50,6 @@ output:
     test_size:
       description: >
         Number of samples used in the test dataset.
+
+references:
+  - "Smirnov, N. (1948). Table for estimating the goodness of fit of empirical distributions. Annals of Mathematical Statistics 19(2), 279-281."

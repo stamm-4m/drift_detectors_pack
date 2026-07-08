@@ -1,0 +1,47 @@
+name: "Classifier Two-Sample Test"
+acronym: "C2ST"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  The Classifier Two-Sample Test detects multivariate drift by training a
+  classifier (here a k-nearest-neighbour classifier) to distinguish reference
+  samples from test samples. When the two distributions coincide, held-out
+  accuracy is at the chance level (0.5 for balanced classes); the more they
+  differ, the higher the accuracy. Drift is flagged when accuracy is
+  significantly above chance via a one-sided binomial test. Classes are
+  balanced by subsampling. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Array of reference (baseline) samples, shape (n, d)."
+  test_data:
+    description: "Array of test samples to compare, shape (m, d)."
+
+parameters:
+  k_neighbors:
+    description: "Number of neighbours for the kNN classifier."
+  test_size:
+    description: "Fraction of each class held out to measure accuracy."
+  alpha:
+    description: "Significance level for the binomial test against chance."
+  max_samples:
+    description: "Per-class cap; larger classes are subsampled."
+  seed:
+    description: "Random seed for subsampling and the split (deterministic output)."
+
+output:
+  description: >
+    Returns the held-out classifier accuracy, a drift flag from the binomial
+    test, and metadata.
+  fields:
+    score:
+      description: "Held-out classification accuracy (0.5 = no drift, 1.0 = fully separable)."
+    drift:
+      description: "Boolean flag, True when accuracy is significantly above 0.5."
+    details:
+      description: "p_value, accuracy, chance_level, k_neighbors, n_test and sizes."
+
+references:
+  - "Lopez-Paz, D., & Oquab, M. (2017). Revisiting classifier two-sample tests. International Conference on Learning Representations (ICLR)."

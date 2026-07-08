@@ -1,0 +1,34 @@
+name: "Statistical Test of Equal Proportions"
+acronym: "STEPD"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  Compares accuracy over a recent window to accuracy over older observations with a two-proportion z-test; warning and drift fire as the p-value drops. Binary error stream.
+
+inputs:
+  test_data:
+    description: "Batch of stream observations (consumed one at a time)."
+
+parameters:
+  window_size:
+    description: "Recent-window length."
+  alpha_warning:
+    description: "p-value threshold for a warning."
+  alpha_drift:
+    description: "p-value threshold for drift."
+
+output:
+  description: >
+    Streaming result: the index at which drift was last raised in the batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean flag, True if drift was raised in this batch."
+    details:
+      description: "warning flag, metric name and detector state."
+
+references:
+  - "Nishida, K., & Yamauchi, K. (2007). Detecting concept drift using statistical testing. Discovery Science, LNCS 4755, 264-269."

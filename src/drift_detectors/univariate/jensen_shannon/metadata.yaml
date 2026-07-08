@@ -1,0 +1,35 @@
+name: "Jensen-Shannon divergence"
+acronym: "JensenShannon"
+version: "1.0"
+type: "univariate"
+mode: "batch"
+
+description: >
+  Symmetric, bounded [0, 1] information-theoretic divergence between the reference and test histograms. Implemented in pure NumPy on a common histogram (or empirical CDF)
+  of the reference and test samples.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) univariate sample."
+  test_data:
+    description: "Test univariate sample to compare against the reference."
+
+parameters:
+  threshold:
+    description: "Drift threshold on the distance/divergence score."
+  bins:
+    description: "Number of histogram bins (histogram-based metrics)."
+
+output:
+  description: >
+    Returns the distance/divergence score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The distance/divergence between reference and test."
+    drift:
+      description: "Boolean flag, True when score >= threshold."
+    details:
+      description: "threshold, bins, metric name and sample sizes."
+
+references:
+  - "Lin, J. (1991). Divergence measures based on the Shannon entropy. IEEE Transactions on Information Theory 37(1), 145-151."

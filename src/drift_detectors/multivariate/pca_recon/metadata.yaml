@@ -1,0 +1,34 @@
+name: "PCA reconstruction-error drift"
+acronym: "PCAReconstruction"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  Fits PCA on the reference and compares reference vs test reconstruction-error distributions with a KS test; sensitive to drift outside the principal subspace. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) multivariate samples, shape (n, d)."
+  test_data:
+    description: "Test multivariate samples to compare, shape (m, d)."
+
+parameters:
+  n_components:
+    description: "Number of principal components retained."
+  alpha:
+    description: "KS significance for drift."
+
+output:
+  description: >
+    Returns the drift score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The detector's drift score."
+    drift:
+      description: "Boolean drift flag."
+    details:
+      description: "Detector parameters and sample sizes."
+
+references:
+  - "Qahtan, A. A., Alharbi, B., Wang, S., & Zhang, X. (2015). A PCA-based change detection framework for multidimensional data streams. ACM SIGKDD, 935-944."

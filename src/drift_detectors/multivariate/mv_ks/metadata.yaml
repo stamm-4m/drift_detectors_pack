@@ -1,0 +1,38 @@
+name: "Multivariate KS via random projections"
+acronym: "MultivariateKS"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  Projects both samples onto many random 1-D directions and runs a univariate KS test on each; the score is the fraction of projections showing significant drift. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) multivariate samples, shape (n, d)."
+  test_data:
+    description: "Test multivariate samples to compare, shape (m, d)."
+
+parameters:
+  n_projections:
+    description: "Number of random projection directions."
+  alpha:
+    description: "Per-projection KS significance."
+  score_threshold:
+    description: "Fraction of significant projections to flag drift."
+  seed:
+    description: "Random seed for the projections."
+
+output:
+  description: >
+    Returns the drift score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The detector's drift score."
+    drift:
+      description: "Boolean drift flag."
+    details:
+      description: "Detector parameters and sample sizes."
+
+references:
+  - "Cuesta-Albertos, J. A., Fraiman, R., & Ransford, T. (2007). A sharp form of the Cramer-Wold theorem. J. Theoretical Probability 20, 201-209."

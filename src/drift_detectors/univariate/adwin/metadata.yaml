@@ -2,6 +2,7 @@ name: "ADaptive WINdowing"
 acronym: "ADWIN"
 version: "1.0"
 type: "univariate"
+mode: "streaming"
 
 description: >
   ADaptive WINdowing (ADWIN) is a streaming drift detection algorithm for 
@@ -39,3 +40,6 @@ output:
     details:
       description: >
         Additional diagnostic information, such as the configured delta value and operating mode.
+
+references:
+  - "Bifet, A., & Gavalda, R. (2007). Learning from time-changing data with adaptive windowing. SIAM International Conference on Data Mining, 443-448."

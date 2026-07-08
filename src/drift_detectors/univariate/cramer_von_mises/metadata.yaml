@@ -1,0 +1,35 @@
+name: "Cramer-von Mises (2-sample)"
+acronym: "CramerVonMises"
+version: "1.0"
+type: "univariate"
+mode: "batch"
+
+description: >
+  Integrated squared difference between the two empirical CDFs (a 2-sample Cramer-von Mises statistic), bounded [0, 1]. Implemented in pure NumPy on a common histogram (or empirical CDF)
+  of the reference and test samples.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) univariate sample."
+  test_data:
+    description: "Test univariate sample to compare against the reference."
+
+parameters:
+  threshold:
+    description: "Drift threshold on the distance/divergence score."
+  bins:
+    description: "Number of histogram bins (histogram-based metrics)."
+
+output:
+  description: >
+    Returns the distance/divergence score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The distance/divergence between reference and test."
+    drift:
+      description: "Boolean flag, True when score >= threshold."
+    details:
+      description: "threshold, bins, metric name and sample sizes."
+
+references:
+  - "Anderson, T. W. (1962). On the distribution of the two-sample Cramer-von Mises criterion. Annals of Mathematical Statistics 33(3), 1148-1159."

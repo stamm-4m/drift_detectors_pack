@@ -2,6 +2,7 @@ name: "PCA-based Change Detection"
 acronym: "PCA-CD"
 version: "1.0"
 type: "multivariate"
+mode: "batch"
 
 description: >
   PCA-CD (PCA-based Change Detection) detects drift in multivariate data by projecting
@@ -46,3 +47,6 @@ output:
       description: "Threshold used for the CSD calculation."
     kl_threshold:
       description: "Threshold used for the KL divergence calculation."
+
+references:
+  - "Qahtan, A. A., Alharbi, B., Wang, S., & Zhang, X. (2015). A PCA-based change detection framework for multidimensional data streams. ACM SIGKDD, 935-944."

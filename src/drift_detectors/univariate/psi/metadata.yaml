@@ -2,6 +2,7 @@ name: "Population Stability Index"
 acronym: "PSI"
 version: "1.0"
 type: "univariate"
+mode: "batch"
 
 description: >
   The Population Stability Index (PSI) measures shifts in the distribution 
@@ -43,3 +44,6 @@ output:
       description: "Boolean flag indicating whether drift was detected."
     details:
       description: "Additional metadata, including bin count, epsilon value, and data sizes."
+
+references:
+  - "Wu, D., & Olson, D. L. (2010). Enterprise risk management: coping with model risk in a large bank. Journal of the Operational Research Society 61, 179-190."

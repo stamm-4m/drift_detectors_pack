@@ -1,11 +1,11 @@
 import numpy as np
-from scipy.stats import ks_2samp
 
 from drift_detectors.drift_detector import DriftDetector
+from drift_detectors.utility._stats import ks_2samp
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 
 
-class KSDetector(DriftDetector):
+class KS(DriftDetector):
     """
     Kolmogorov–Smirnov Drift Detector (univariate, batch or online).
 
@@ -74,3 +74,7 @@ class KSDetector(DriftDetector):
                 "test_size": test.size,
             }
         )
+
+
+# Backward-compatible alias (pre-0.5 name)
+KSDetector = KS

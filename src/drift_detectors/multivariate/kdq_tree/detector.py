@@ -1,8 +1,7 @@
 import numpy as np
-from scipy.spatial import KDTree
-from scipy.stats import combine_pvalues, ks_2samp
 
 from drift_detectors.drift_detector import DriftDetector
+from drift_detectors.utility._stats import fisher_combine, knn_indices, ks_2samp
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 
 
@@ -48,24 +47,23 @@ class KDQTree(DriftDetector):
         if len(test) < self.k_neighbors or len(ref) < self.k_neighbors:
             return ScoreDriftResult(score=None, drift=False, details={"status": "not_ready"})
 
-        # KD-trees: query the reference tree with the reference points to define
-        # stable neighbourhoods, then query the test tree with the same
-        # reference anchors so each pair of patches is spatially aligned.
-        tree_ref = KDTree(ref)
-        tree_test = KDTree(test)
-        ref_neighbors_idx = tree_ref.query(ref, k=self.k_neighbors)[1]
-        test_neighbors_idx = tree_test.query(ref, k=self.k_neighbors)[1]
+        # Neighbourhoods: for each reference anchor take its k nearest in the
+        # reference set and its k nearest in the test set, so each pair of
+        # patches is spatially aligned (NumPy brute-force kNN).
+        ref = np.asarray(ref, dtype=float)
+        ref_neighbors_idx = knn_indices(ref, ref, self.k_neighbors)
+        test_neighbors_idx = knn_indices(test, ref, self.k_neighbors)
 
         p_values = []
         for ref_idx, test_idx in zip(ref_neighbors_idx, test_neighbors_idx, strict=False):
             ref_patch = ref[ref_idx]
             test_patch = test[test_idx]
             dim_p = [
-                ks_2samp(ref_patch[:, d], test_patch[:, d], method=self.ks_method)[1]
+                ks_2samp(ref_patch[:, d], test_patch[:, d])[1]
                 for d in range(ref.shape[1])
             ]
             if self.use_fisher:
-                _, combined_p = combine_pvalues(dim_p)
+                _, combined_p = fisher_combine(dim_p)
                 p_values.append(combined_p)
             else:
                 p_values.append(np.mean(dim_p))

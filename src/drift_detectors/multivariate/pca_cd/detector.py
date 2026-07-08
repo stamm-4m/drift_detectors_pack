@@ -1,8 +1,7 @@
 import numpy as np
-from scipy.stats import entropy
-from sklearn.decomposition import PCA
 
 from drift_detectors.drift_detector import DriftDetector
+from drift_detectors.utility._stats import kl_entropy, pca_project
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 
 
@@ -70,10 +69,8 @@ class PCA_CD(DriftDetector):
                 details={"status": "not_ready"}
             )
 
-        # Fit PCA on reference, transform both
-        pca = PCA(n_components=self._n_components)
-        ref_proj = pca.fit_transform(ref)
-        test_proj = pca.transform(test)
+        # Fit PCA on reference (centered) and project both -- NumPy SVD
+        ref_proj, test_proj = pca_project(ref, test, self._n_components)
 
         csd_thresh = csd_threshold or self._csd_threshold
         kl_thresh = kl_threshold or self._kl_threshold
@@ -98,7 +95,7 @@ class PCA_CD(DriftDetector):
     def _symmetric_kl_divergence(self, p: np.ndarray, q: np.ndarray) -> float:
         p = np.clip(p, 1e-8, None)
         q = np.clip(q, 1e-8, None)
-        return 0.5 * (entropy(p, q) + entropy(q, p))
+        return 0.5 * (kl_entropy(p, q) + kl_entropy(q, p))
 
     def _compute_drift_score(self, ref: np.ndarray, test: np.ndarray,
                              csd_thresh: float, kl_thresh: float) -> tuple[float, float, float]:

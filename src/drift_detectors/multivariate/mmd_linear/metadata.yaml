@@ -1,0 +1,34 @@
+name: "Linear-time Maximum Mean Discrepancy"
+acronym: "MMDLinear"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  Unbiased linear-time estimate of MMD^2 with an RBF kernel; an O(n) alternative to the quadratic MMD for large batches. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) multivariate samples, shape (n, d)."
+  test_data:
+    description: "Test multivariate samples to compare, shape (m, d)."
+
+parameters:
+  gamma:
+    description: "RBF bandwidth (float or 'median')."
+  threshold:
+    description: "Drift threshold on the MMD^2 estimate."
+
+output:
+  description: >
+    Returns the drift score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The detector's drift score."
+    drift:
+      description: "Boolean drift flag."
+    details:
+      description: "Detector parameters and sample sizes."
+
+references:
+  - "Gretton, A., Borgwardt, K. M., Rasch, M. J., Scholkopf, B., & Smola, A. (2012). A kernel two-sample test (linear-time estimate). JMLR 13, 723-773."

@@ -2,6 +2,7 @@ name: "KDQ-tree Drift Detection"
 acronym: "KDQ"
 version: "1.0"
 type: "multivariate"
+mode: "batch"
 
 description: >
   KDQ-tree is a neighborhood-based multivariate drift detection method that compares
@@ -45,3 +46,6 @@ output:
       description: >
         Metadata including the number of neighborhoods evaluated, method settings,
         and mode of operation (online or offline).
+
+references:
+  - "Dasu, T., Krishnan, S., Venkatasubramanian, S., & Yi, K. (2006). An information-theoretic approach to detecting changes in multi-dimensional data streams. Interface Symposium."

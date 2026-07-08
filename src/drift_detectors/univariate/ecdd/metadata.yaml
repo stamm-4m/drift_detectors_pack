@@ -1,0 +1,36 @@
+name: "EWMA for Concept Drift Detection"
+acronym: "ECDD"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  Exponentially weighted moving-average control chart with a time-varying control limit; drift fires when the EWMA departs from the running mean by more than L sigma. Any numeric value stream.
+
+inputs:
+  test_data:
+    description: "Batch of stream observations (consumed one at a time)."
+
+parameters:
+  lambda_:
+    description: "EWMA smoothing weight in (0, 1]."
+  warning_level:
+    description: "Sigma multiplier for the warning limit."
+  control_level:
+    description: "Sigma multiplier for the control (drift) limit."
+  min_instances:
+    description: "Minimum observations before drift can be raised."
+
+output:
+  description: >
+    Streaming result: the index at which drift was last raised in the batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean flag, True if drift was raised in this batch."
+    details:
+      description: "warning flag, metric name and detector state."
+
+references:
+  - "Ross, G. J., Adams, N. M., Tasoulis, D. K., & Hand, D. J. (2012). Exponentially weighted moving average charts for detecting concept drift. Pattern Recognition Letters 33(2), 191-198."

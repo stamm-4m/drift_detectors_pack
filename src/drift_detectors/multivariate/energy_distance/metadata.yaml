@@ -1,0 +1,44 @@
+name: "Energy Distance"
+acronym: "EnergyDistance"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  Energy Distance is a nonparametric, distance-based two-sample test for
+  multivariate distributional drift. The statistic
+  E = 2*mean||x-y|| - mean||x-x'|| - mean||y-y'|| (Euclidean) is zero if and
+  only if the reference and test distributions coincide, and increases with
+  differences in location, scale or shape. A label-permutation test provides a
+  p-value with no distributional assumptions. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Array of reference (baseline) samples, shape (n, d)."
+  test_data:
+    description: "Array of test samples to compare, shape (m, d)."
+
+parameters:
+  alpha:
+    description: "Significance level for the permutation test."
+  n_permutations:
+    description: "Number of label permutations used to build the null distribution."
+  max_samples:
+    description: "Per-group cap; larger groups are subsampled to keep the test tractable."
+  seed:
+    description: "Random seed for subsampling and permutations (deterministic output)."
+
+output:
+  description: >
+    Returns the energy-distance statistic, a drift flag from the permutation
+    test, and metadata.
+  fields:
+    score:
+      description: "The energy-distance statistic (>= 0; larger means more drift)."
+    drift:
+      description: "Boolean flag, True when the permutation p-value < alpha."
+    details:
+      description: "p_value, n_permutations, alpha, and sample sizes."
+
+references:
+  - "Szekely, G. J., & Rizzo, M. L. (2013). Energy statistics: A class of statistics based on distances. Journal of Statistical Planning and Inference 143(8), 1249-1272."

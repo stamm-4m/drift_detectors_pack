@@ -1,11 +1,11 @@
 import numpy as np
-from sklearn.metrics.pairwise import rbf_kernel
 
 from drift_detectors.drift_detector import DriftDetector
+from drift_detectors.utility._stats import rbf_kernel
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 
 
-class MMDDetector(DriftDetector):
+class MMD(DriftDetector):
     """Maximum Mean Discrepancy (MMD) Drift Detector.
 
     Compares distributions using kernel embedding of samples.
@@ -81,3 +81,7 @@ class MMDDetector(DriftDetector):
                 "mode": "online" if self.is_online() else "offline",
             },
         )
+
+
+# Backward-compatible alias (pre-0.5 name)
+MMDDetector = MMD

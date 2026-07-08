@@ -25,9 +25,16 @@ use_cases/IndPenSim/
 │   └── reference/                  destination of the reference set (batches 1–60)
 ├── experiments/
 │   ├── run_experiment_1.py         drift detectors over inputs, per phase
-│   ├── run_experiment_2.py         MDM across CART / M5 / CUBIST / RF, per phase
-│   ├── soft_sensors.py             pure-NumPy CART / M5 / CUBIST / RF
+│   ├── run_experiment_2.py         MDM across RF / CART / SVM / LSTM, per phase
+│   ├── registry_models.py          metadata-driven loader for the 4 registry models
+│   ├── soft_sensors.py             legacy pure-NumPy learners (unused; kept for reference)
 │   └── README.md
+├── models/                        vendored STAMM registry soft sensors (Exp. 2)
+│   ├── 0001_[python]_penicillin_RF.pkl
+│   ├── 0005_[python]_penicillin_CART.pkl
+│   ├── 0007_[python]_penicillin_SVM.pkl   (+ feature/target scalers)
+│   ├── 0009_[Python]_penicillin_LSTM.keras (+ feature/target scalers)
+│   └── configs/                    each model's registry metadata.yaml
 ├── figures/
 │   ├── fig_stamm_integration.png   Fig. 1 of the paper
 │   ├── fig_class_diagram.png       Fig. 2 of the paper
@@ -37,7 +44,7 @@ use_cases/IndPenSim/
 └── results/
     ├── expA_per_phase.json         per-variable PSI / KS per phase
     ├── expA_multivar_per_phase.json   MMD / PCA-CD / KDQ-Tree per phase
-    ├── expB_per_phase.json         CART / M5 / CUBIST / RF perf + MDM per phase
+    ├── expB_per_phase.json         RF / CART / SVM / LSTM perf + MDM per phase
     └── README.md                   per-batch tables S0–S3 (Markdown)
 ```
 
@@ -88,9 +95,10 @@ use_cases/IndPenSim/
   largely returned to their reference distribution, but the downstream
   variables (DO2, off-gas CO2) accumulate the fault effect — PSI on
   off-gas CO2 reaches 21.2 on batch 91 in the stationary phase.
-* Model Disagreement (MDM) across CART, M5, CUBIST and Random Forest soft
-  sensors cleanly separates near-in-control batches (MDM ≈ 0.137–0.147)
-  from faulty batches (MDM ≈ 0.181–0.427) in the log phase.
+* Model Disagreement (MDM) across the structurally diverse panel RF, CART
+  (interpretable) and SVM, LSTM (black-box) separates near-in-control from
+  faulty batches in the log phase. Run `run_experiment_2.py` to regenerate
+  the per-batch MDM values for this panel.
 
 See `results/README.md` for the full per-batch tables.
 

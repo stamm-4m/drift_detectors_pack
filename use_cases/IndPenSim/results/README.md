@@ -17,7 +17,7 @@ Source JSON for the same numbers:
 
 - `expA_per_phase.json` --- PSI / KS per fermentation phase (Tables S0, S1).
 - `expA_multivar_per_phase.json` --- MMD / PCA-CD / KDQ-Tree per phase (Table S3).
-- `expB_per_phase.json` --- soft-sensor CV / MAE / RMSE and MDM per phase (Table S2 and Table 2 in the paper).
+- `expB_per_phase.json` --- soft-sensor CV / MAE / RMSE and MDM per phase for the four-model panel RF, CART, SVM, LSTM (Table S2 and Table 2 in the paper).
 
 ---
 
@@ -111,50 +111,16 @@ Source JSON for the same numbers:
 | death | 99 | 0.274 | 0.045 | 0.600 | 0.885 |
 | death | 100 | 0.274 | 0.064 | 0.485 | 0.679 |
 
-## Table S2. MAE (g/L) per soft sensor, per fermentation phase
+## Table S2. Soft-sensor error per fermentation phase
 
-| Phase | Batch | MAE CART | MAE M5 | MAE CUBIST | MAE RF |
-|---|---|---|---|---|---|
-| lag | 91 | 0.132 | 0.091 | 1.304 | 1.854 |
-| lag | 92 | 0.016 | 0.053 | 3.052 | 1.426 |
-| lag | 93 | 0.033 | 0.061 | 2.654 | 1.480 |
-| lag | 94 | 0.588 | 1.502 | 3.127 | 2.315 |
-| lag | 95 | 0.182 | 0.135 | 1.348 | 1.451 |
-| lag | 96 | 0.024 | 0.044 | 3.429 | 1.736 |
-| lag | 97 | 0.156 | 0.114 | 1.335 | 1.336 |
-| lag | 98 | 0.011 | 0.042 | 3.224 | 1.548 |
-| lag | 99 | 0.589 | 1.452 | 3.398 | 2.513 |
-| lag | 100 | 0.627 | 1.403 | 3.370 | 2.538 |
-| log | 91 | 3.925 | 5.830 | 6.104 | 5.758 |
-| log | 92 | 0.523 | 1.110 | 1.496 | 1.520 |
-| log | 93 | 0.871 | 1.329 | 1.891 | 1.466 |
-| log | 94 | 1.556 | 2.511 | 2.526 | 2.456 |
-| log | 95 | 2.950 | 2.923 | 3.479 | 4.135 |
-| log | 96 | 1.339 | 1.753 | 2.502 | 2.272 |
-| log | 97 | 2.721 | 3.224 | 4.374 | 4.639 |
-| log | 98 | 0.785 | 1.480 | 1.606 | 1.442 |
-| log | 99 | 0.915 | 3.693 | 3.433 | 2.808 |
-| log | 100 | 2.587 | 4.808 | 4.660 | 3.961 |
-| stationary | 91 | 6.330 | 7.283 | 5.590 | 5.994 |
-| stationary | 92 | 1.991 | 3.578 | 2.417 | 2.103 |
-| stationary | 93 | 4.080 | 4.871 | 6.814 | 5.523 |
-| stationary | 94 | 6.797 | 7.072 | 4.939 | 5.093 |
-| stationary | 95 | 4.371 | 4.904 | 2.832 | 3.500 |
-| stationary | 96 | 2.170 | 2.151 | 3.138 | 2.661 |
-| stationary | 97 | 1.923 | 1.890 | 1.326 | 1.388 |
-| stationary | 98 | 3.294 | 4.519 | 5.039 | 4.201 |
-| stationary | 99 | 4.804 | 6.990 | 5.133 | 6.055 |
-| stationary | 100 | 13.341 | 12.184 | 10.680 | 11.943 |
-| death | 91 | 5.552 | 7.779 | 3.533 | 2.801 |
-| death | 92 | 1.899 | 1.336 | 1.578 | 0.582 |
-| death | 93 | 7.340 | 10.243 | 12.151 | 10.114 |
-| death | 94 | 5.712 | 4.761 | 3.703 | 5.062 |
-| death | 95 | 4.101 | 16.718 | 7.382 | 0.977 |
-| death | 96 | 3.348 | 5.418 | 6.690 | 5.566 |
-| death | 97 | 4.972 | 4.164 | 0.981 | 2.132 |
-| death | 98 | 8.055 | 8.053 | 12.620 | 9.592 |
-| death | 99 | 3.894 | 3.465 | 1.741 | 2.716 |
-| death | 100 | 9.547 | 7.527 | 9.462 | 10.081 |
+> **Regenerate.** As of the SoftwareX revision, Experiment 2 uses a
+> structurally diverse four-model panel served by the STAMM model
+> registry --- **RF** and **CART** (Acosta-Pavas et al., 2024) and
+> **SVM** and **LSTM** (STAMM, 2026) --- loaded as-is (no retraining).
+> The per-batch MAE/RMSE for this panel are stored in the STAMM model
+> registry database and are also reproduced locally by
+> `python -m use_cases.IndPenSim.experiments.run_experiment_2`
+> (writes `expB_per_phase.json`).
 
 ## Table S3. Multivariate drift detectors per fermentation phase
 
@@ -211,62 +177,10 @@ not apply. KDQ-Tree is reported on the same partition.
 
 ## Per-soft-sensor coefficient of variation (CV) per fermentation phase
 
-Companion table to Table 2 of the paper. The Coefficient of Variation is
-defined here as `CV = RMSE(y, y_hat) / mean(y)`, a unit-free standard
-error measure expressed as a fraction of the mean target. It requires the
-ground-truth penicillin trace and is therefore a research-time diagnostic,
-not a deployment signal. Reported here to let the reader cross-check that
-the MDM ranking in Table 2 of the paper matches the actual prediction
-quality from the ground-truth side.
-
-| Phase | Batch | CV CART | CV M5 | CV CUBIST | CV RF |
-|---|---|---|---|---|---|
-| lag | 91 | 2.027 | 1.208 | 17.150 | 14.726 |
-| lag | 92 | 0.674 | 1.356 | 80.356 | 25.228 |
-| lag | 93 | 1.145 | 1.461 | 57.214 | 20.956 |
-| lag | 94 | 23.082 | 59.123 | 77.110 | 48.324 |
-| lag | 95 | 2.008 | 1.373 | 13.420 | 8.802 |
-| lag | 96 | 0.780 | 0.970 | 69.978 | 23.969 |
-| lag | 97 | 2.022 | 1.336 | 15.524 | 9.508 |
-| lag | 98 | 0.450 | 0.985 | 75.244 | 24.379 |
-| lag | 99 | 20.530 | 50.038 | 73.150 | 44.339 |
-| lag | 100 | 20.367 | 48.575 | 70.089 | 43.816 |
-| log | 91 | 0.981 | 1.433 | 1.267 | 1.223 |
-| log | 92 | 0.081 | 0.212 | 0.216 | 0.209 |
-| log | 93 | 0.141 | 0.174 | 0.225 | 0.182 |
-| log | 94 | 0.420 | 0.585 | 0.424 | 0.372 |
-| log | 95 | 0.616 | 0.697 | 0.556 | 0.707 |
-| log | 96 | 0.274 | 0.325 | 0.305 | 0.294 |
-| log | 97 | 0.467 | 0.619 | 0.697 | 0.759 |
-| log | 98 | 0.109 | 0.227 | 0.198 | 0.173 |
-| log | 99 | 0.177 | 0.832 | 0.484 | 0.386 |
-| log | 100 | 0.492 | 1.144 | 0.669 | 0.554 |
-| stationary | 91 | 1.071 | 1.274 | 0.970 | 1.056 |
-| stationary | 92 | 0.114 | 0.229 | 0.135 | 0.119 |
-| stationary | 93 | 0.185 | 0.200 | 0.277 | 0.222 |
-| stationary | 94 | 0.745 | 0.788 | 0.539 | 0.547 |
-| stationary | 95 | 0.561 | 0.652 | 0.403 | 0.475 |
-| stationary | 96 | 0.120 | 0.131 | 0.172 | 0.146 |
-| stationary | 97 | 0.115 | 0.115 | 0.075 | 0.085 |
-| stationary | 98 | 0.152 | 0.204 | 0.245 | 0.182 |
-| stationary | 99 | 0.564 | 0.789 | 0.559 | 0.635 |
-| stationary | 100 | 1.561 | 1.442 | 1.233 | 1.377 |
-| death | 91 | 1.492 | 2.488 | 1.234 | 0.815 |
-| death | 92 | 0.139 | 0.083 | 0.095 | 0.041 |
-| death | 93 | 0.263 | 0.341 | 0.398 | 0.333 |
-| death | 94 | 0.858 | 0.784 | 0.599 | 0.772 |
-| death | 95 | 0.652 | 2.661 | 1.176 | 0.214 |
-| death | 96 | 0.184 | 0.331 | 0.313 | 0.256 |
-| death | 97 | 0.303 | 0.269 | 0.075 | 0.141 |
-| death | 98 | 0.258 | 0.250 | 0.390 | 0.298 |
-| death | 99 | 0.599 | 0.600 | 0.295 | 0.467 |
-| death | 100 | 1.554 | 1.264 | 1.526 | 1.659 |
-
-In the log phase (the operationally relevant window per the paper),
-the four soft sensors predict the near-in-control batches (92, 93, 96, 98)
-with CV in the range 0.08-0.23. On batches with documented faults the same
-learners disagree by a factor of two to ten in CV, with the worst-fitting
-sensor (most often M5) more than tripling its in-control CV on aeration
-faults 99 and 100.
-
-Source JSON: `expB_per_phase.json`, fields `perf.{CART,M5,CUBIST,RF}.CV`.
+> **Regenerate.** Companion table to Table 2 of the paper, for the
+> RF / CART / SVM / LSTM panel. `CV = RMSE(y, y_hat) / mean(y)` requires
+> the ground-truth penicillin trace and is a research-time diagnostic,
+> not a deployment signal. Stored in the STAMM model registry database and
+> reproduced locally by
+> `python -m use_cases.IndPenSim.experiments.run_experiment_2`
+> (`expB_per_phase.json`, fields `perf.{RF,CART,SVM,LSTM}.CV`).

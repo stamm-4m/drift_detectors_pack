@@ -1,0 +1,38 @@
+name: "Nearest-neighbour two-sample test"
+acronym: "NNTwoSample"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  Pools the (balanced) reference and test samples and tests whether each point's k nearest neighbours share its label more often than chance; a nonparametric two-sample test. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) multivariate samples, shape (n, d)."
+  test_data:
+    description: "Test multivariate samples to compare, shape (m, d)."
+
+parameters:
+  k_neighbors:
+    description: "Number of nearest neighbours."
+  alpha:
+    description: "Significance level."
+  max_samples:
+    description: "Per-class cap."
+  seed:
+    description: "Random seed for balancing."
+
+output:
+  description: >
+    Returns the drift score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The detector's drift score."
+    drift:
+      description: "Boolean drift flag."
+    details:
+      description: "Detector parameters and sample sizes."
+
+references:
+  - "Schilling, M. F. (1986). Multivariate two-sample tests based on nearest neighbors. J. American Statistical Association 81(395), 799-806."

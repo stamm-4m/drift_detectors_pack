@@ -35,7 +35,7 @@ class DisagreementMetric(ABC):
     """
 
     name: str = "abstract"
-    kind: str = "abstract"  # must be "error" or "correlation"
+    kind: str = "abstract"  # "error", "correlation", or "temporal"
 
     @abstractmethod
     def pair(self, y_i: np.ndarray, y_j: np.ndarray, *, scale: float = 1.0) -> float:

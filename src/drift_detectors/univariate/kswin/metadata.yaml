@@ -1,0 +1,36 @@
+name: "Kolmogorov-Smirnov Windowing"
+acronym: "KSWIN"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  Keeps a sliding window and periodically runs a two-sample KS test between the newest samples and a random sample of older ones; drift fires when the p-value falls below alpha. Any numeric value stream.
+
+inputs:
+  test_data:
+    description: "Batch of stream observations (consumed one at a time)."
+
+parameters:
+  alpha:
+    description: "KS-test significance level for drift."
+  window_size:
+    description: "Sliding-window length."
+  stat_size:
+    description: "Size of the recent sub-window compared each step."
+  seed:
+    description: "Random seed for the older-sample draw."
+
+output:
+  description: >
+    Streaming result: the index at which drift was last raised in the batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean flag, True if drift was raised in this batch."
+    details:
+      description: "warning flag, metric name and detector state."
+
+references:
+  - "Raab, C., Heusinger, M., & Schleif, F.-M. (2020). Reactive soft prototype computing for concept drift streams. Neurocomputing 416, 340-351."

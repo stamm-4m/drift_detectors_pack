@@ -1,0 +1,34 @@
+name: "Cumulative Sum"
+acronym: "CUSUM"
+version: "1.0"
+type: "univariate"
+mode: "streaming"
+
+description: >
+  Two-sided standardized CUSUM: accumulates positive and negative standardized deviations beyond a slack and fires when either exceeds a threshold. Any numeric value stream.
+
+inputs:
+  test_data:
+    description: "Batch of stream observations (consumed one at a time)."
+
+parameters:
+  k:
+    description: "Slack (reference value) in standard deviations."
+  h:
+    description: "Decision threshold on the cumulative sum."
+  min_instances:
+    description: "Minimum observations before drift can be raised."
+
+output:
+  description: >
+    Streaming result: the index at which drift was last raised in the batch.
+  fields:
+    last_index:
+      description: "Offset within the batch where drift was raised, or -1."
+    drift:
+      description: "Boolean flag, True if drift was raised in this batch."
+    details:
+      description: "warning flag, metric name and detector state."
+
+references:
+  - "Page, E. S. (1954). Continuous inspection schemes. Biometrika 41(1/2), 100-115."

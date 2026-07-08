@@ -1,0 +1,34 @@
+name: "Hellinger Distance Drift Detection Method"
+acronym: "HDDDM"
+version: "1.0"
+type: "multivariate"
+mode: "batch"
+
+description: >
+  Averages the per-feature histogram Hellinger distance between the reference and test marginals; bounded [0, 1]. Implemented in pure NumPy.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) multivariate samples, shape (n, d)."
+  test_data:
+    description: "Test multivariate samples to compare, shape (m, d)."
+
+parameters:
+  threshold:
+    description: "Drift threshold on the mean Hellinger distance."
+  bins:
+    description: "Histogram bins per feature."
+
+output:
+  description: >
+    Returns the drift score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The detector's drift score."
+    drift:
+      description: "Boolean drift flag."
+    details:
+      description: "Detector parameters and sample sizes."
+
+references:
+  - "Ditzler, G., & Polikar, R. (2011). Hellinger distance based drift detection for nonstationary environments. IEEE CIDUE, 41-48."

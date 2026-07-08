@@ -1,0 +1,35 @@
+name: "Wasserstein-1 (earth-mover) distance"
+acronym: "Wasserstein"
+version: "1.0"
+type: "univariate"
+mode: "batch"
+
+description: >
+  Exact 1-D Wasserstein-1 (earth-mover) distance between the samples, normalised by the pooled standard deviation. Implemented in pure NumPy on a common histogram (or empirical CDF)
+  of the reference and test samples.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) univariate sample."
+  test_data:
+    description: "Test univariate sample to compare against the reference."
+
+parameters:
+  threshold:
+    description: "Drift threshold on the distance/divergence score."
+  bins:
+    description: "Number of histogram bins (histogram-based metrics)."
+
+output:
+  description: >
+    Returns the distance/divergence score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The distance/divergence between reference and test."
+    drift:
+      description: "Boolean flag, True when score >= threshold."
+    details:
+      description: "threshold, bins, metric name and sample sizes."
+
+references:
+  - "Kantorovich, L. V. (1960). Mathematical methods of organizing and planning production. Management Science 6(4), 366-422."

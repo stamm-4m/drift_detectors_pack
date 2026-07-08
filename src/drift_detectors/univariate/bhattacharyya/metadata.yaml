@@ -1,0 +1,35 @@
+name: "Bhattacharyya distance"
+acronym: "Bhattacharyya"
+version: "1.0"
+type: "univariate"
+mode: "batch"
+
+description: >
+  Bhattacharyya distance -ln(sum sqrt(p*q)); 0 = identical, grows without bound as the histograms separate. Implemented in pure NumPy on a common histogram (or empirical CDF)
+  of the reference and test samples.
+
+inputs:
+  reference_data:
+    description: "Reference (baseline) univariate sample."
+  test_data:
+    description: "Test univariate sample to compare against the reference."
+
+parameters:
+  threshold:
+    description: "Drift threshold on the distance/divergence score."
+  bins:
+    description: "Number of histogram bins (histogram-based metrics)."
+
+output:
+  description: >
+    Returns the distance/divergence score, a drift flag, and metadata.
+  fields:
+    score:
+      description: "The distance/divergence between reference and test."
+    drift:
+      description: "Boolean flag, True when score >= threshold."
+    details:
+      description: "threshold, bins, metric name and sample sizes."
+
+references:
+  - "Bhattacharyya, A. (1943). On a measure of divergence between two statistical populations defined by their probability distributions. Bull. Calcutta Math. Soc. 35, 99-109."

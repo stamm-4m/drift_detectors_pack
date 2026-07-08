@@ -9,9 +9,9 @@ framework into which this package is integrated.
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python >= 3.10](https://img.shields.io/badge/python-%3E%3D3.10-blue.svg)](https://www.python.org/)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-green.svg)](.github/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.4.0-orange.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.5.0-orange.svg)](pyproject.toml)
 
-## What's new in 0.4.0
+## What's new in 0.5.0
 
 * The **Model Disagreement Metric** (`MDM`) is now a pluggable orchestrator: pass
   `metrics=[...]` with any combination of `MSEDisagreement`,
@@ -21,12 +21,23 @@ framework into which this package is integrated.
   STAMM model registry's per-batch export format.
 * `MMDDetector` ships a `gamma='median'` option (median-distance heuristic),
   essential for unscaled industrial data with mixed-scale features.
-* Three pure-NumPy streaming detectors (`PageHinkley`, `HDDM_A`, `EDDM`)
-  remove a transitive dependency on `scikit-multiflow`.
+* **Catalogue expanded to 30 detectors** across three families: nine
+  distributional and ten sequential/error-based univariate detectors, ten
+  multivariate detectors, and the model-based MDM (whose disagreement
+  metrics now include three time-series-aware ones: DTW, lagged
+  cross-correlation and an autocorrelation-function divergence).
+* **NumPy-only runtime.** Every detector now runs on NumPy alone: `scipy`,
+  `scikit-learn` and `river` were replaced by internal implementations
+  (`utility/_stats.py`, `utility/_adwin.py`) and moved to the optional
+  `compat` extra, used only by `tests/test_stats_equivalence.py` to verify
+  the re-implementations match the reference libraries. Runtime dependencies
+  are just `numpy` and `PyYAML` — no transitive `pandas`, no compiled ML
+  stack, installs anywhere.
 * New **IndPenSim use case** at `use_cases/IndPenSim/` that reproduces the
-  experiments of the companion SoftwareX paper, including a
-  pure-NumPy reimplementation of the four interpretable soft sensors of
-  Acosta-Pavas et al. (2024): CART, M5, CUBIST and Random Forest.
+  experiments of the companion SoftwareX paper. Experiment 2 loads a
+  structurally diverse four-model panel from the STAMM model registry ---
+  RF and CART (Acosta-Pavas et al., 2024) and SVM and LSTM (STAMM, 2026)
+  --- via a metadata-driven loader (`registry_models.py`).
 * New per-phase methodology: each detector is run independently in the four
   canonical fermentation phases (lag, log/exponential, stationary, death),
   respecting the non-stationarity of fed-batch fermentation.
@@ -52,18 +63,38 @@ the catalogue without special-casing.
 
 ## Catalogue
 
-| Name         | Family                       | Mode      | Reference                                     |
-| ------------ | ---------------------------- | --------- | --------------------------------------------- |
-| PSI          | Univariate, distributional   | batch     | Wu & Olson, 2010                              |
-| KS-test      | Univariate, distributional   | batch     | Smirnov, 1948                                 |
-| ADWIN        | Univariate, sequential       | streaming | Bifet & Gavaldà, 2007                         |
-| Page-Hinkley | Univariate, sequential       | streaming | Page, 1954                                    |
-| HDDM-A       | Univariate, sequential       | streaming | Frías-Blanco *et al.*, 2015                   |
-| EDDM         | Univariate, error-based      | streaming | Baena-García *et al.*, 2006                   |
-| MMD          | Multivariate, kernel         | batch     | Gretton *et al.*, 2012                        |
-| PCA-CD       | Multivariate, projection     | batch     | Qahtan *et al.*, 2015                         |
-| KDQ-Tree     | Multivariate, partition      | batch     | Dasu *et al.*, 2006                           |
-| MDM          | Model-based, ensemble        | batch     | Suarez *et al.*, 2026 (STAMM)                 |
+| Name | Family | Mode | Reference |
+| --- | --- | --- | --- |
+| PSI | Univariate, distributional | batch | Wu & Olson, 2010 |
+| KS | Univariate, distributional | batch | Smirnov, 1948 |
+| Jensen-Shannon | Univariate, distributional | batch | Lin, 1991 |
+| Hellinger | Univariate, distributional | batch | Hellinger, 1909 |
+| Total Variation | Univariate, distributional | batch | Levin & Peres, 2017 |
+| Chi-square | Univariate, distributional | batch | Pearson, 1900 |
+| Bhattacharyya | Univariate, distributional | batch | Bhattacharyya, 1943 |
+| Wasserstein-1 | Univariate, distributional | batch | Kantorovich, 1960 |
+| Cramer-von Mises | Univariate, distributional | batch | Anderson, 1962 |
+| ADWIN | Univariate, sequential | streaming | Bifet & Gavaldà, 2007 |
+| Page-Hinkley | Univariate, sequential | streaming | Page, 1954 |
+| HDDM-A | Univariate, sequential | streaming | Frías-Blanco et al., 2015 |
+| EDDM | Univariate, error-based | streaming | Baena-García et al., 2006 |
+| DDM | Univariate, error-based | streaming | Gama et al., 2004 |
+| RDDM | Univariate, error-based | streaming | Barros et al., 2017 |
+| CUSUM | Univariate, sequential | streaming | Page, 1954 |
+| ECDD | Univariate, sequential | streaming | Ross et al., 2012 |
+| KSWIN | Univariate, windowing | streaming | Raab et al., 2020 |
+| STEPD | Univariate, error-based | streaming | Nishida & Yamauchi, 2007 |
+| MMD | Multivariate, kernel | batch | Gretton et al., 2012 |
+| MMD-linear | Multivariate, kernel | batch | Gretton et al., 2012 |
+| PCA-CD | Multivariate, projection | batch | Qahtan et al., 2015 |
+| PCA reconstruction | Multivariate, projection | batch | Qahtan et al., 2015 |
+| KDQ-Tree | Multivariate, partition | batch | Dasu et al., 2006 |
+| Energy Distance | Multivariate, distance | batch | Székely & Rizzo, 2013 |
+| C2ST | Multivariate, classifier | batch | Lopez-Paz & Oquab, 2017 |
+| HDDDM | Multivariate, histogram | batch | Ditzler & Polikar, 2011 |
+| Multivariate KS | Multivariate, projection | batch | Cuesta-Albertos et al., 2007 |
+| NN two-sample | Multivariate, neighbours | batch | Schilling, 1986 |
+| MDM | Model-based, ensemble | batch | Suarez et al., 2026 (STAMM) |
 
 ## Install
 
@@ -94,11 +125,10 @@ ref_mv  = np.random.normal(0.0, 1.0, size=(500, 4))
 test_mv = np.random.normal(0.4, 1.0, size=(500, 4))
 print(MMDDetector(gamma="median").calculate(test_mv, ref_mv))
 
-# model disagreement across two co-deployed soft sensors
-def linear(X):  return X @ w_lin + b_lin
-def tree(X):    return rf.predict(X)
-mdm = ModelDisagreementMetric(models=[linear, tree], threshold=0.25)
-print(mdm.calculate(X_live).score)
+# model disagreement across co-deployed soft sensors (predictions-in API):
+# y1, y2, y3 are 1-D prediction arrays exported by each co-deployed model
+mdm = ModelDisagreementMetric(threshold=0.25)
+print(mdm.calculate(predictions=[y1, y2, y3]).score)
 ```
 
 ## Streaming detectors
@@ -157,21 +187,28 @@ monitoring through this package, and exposes the model-divergence panel
 that is the dashboard counterpart of the `ModelDisagreementMetric`
 detector.
 
+## Detector pack (STAMM model-registry upload)
+
+The STAMM model registry installs this toolkit as an uploadable, versioned
+*detector pack*: its `register` endpoint ingests a **slim `drift_detectors/`
+archive** (the package only -- no data, tests, use cases or benchmarks),
+reads the version, parses every detector's `metadata.yaml` into a read-only
+catalogue, and pins one active version that the workflow orchestrator runs
+server-side. Build that archive with:
+
+```bash
+python tools/build_detector_pack.py
+# -> dist/drift_detectors_pack-<version>.zip   (drift_detectors/ + pyproject.toml)
+```
+
+Upload the resulting zip through the registry UI / `register` endpoint. Only
+folders that contain both `detector.py` and `metadata.yaml` are registered as
+detectors.
+
 ## Citing
 
 ```bibtex
 @article{galindez2026driftdetectors,
   title   = {drift\_detectors\_pack: A unified drift detection toolkit for
              soft sensor monitoring in industrial bioprocesses},
-  author  = {Galindez, Elizabeth and Crowther, Matthew and Metcalfe, Brett and
-             Koehorst, Jasper J. and Aristizabal Morales, Santiago and
-             Su\'arez, Carlos and Daboussi, Fayza and Corrales, David Camilo},
-  journal = {SoftwareX},
-  year    = {2026},
-  note    = {Under review}
-}
-```
-
-## License
-
-Apache-2.0 — see [`LICENSE`](LICENSE).
+  author  = {Galin
