@@ -29,12 +29,12 @@ class KS(DriftDetector):
         super().__init__(reference_data=reference_data, online=online)
         self._alpha = alpha
         if self.is_online():
-            self._test_buffer = []
+            self._test_buffer: list = []
 
     def calculate(self,
                   test_data: np.ndarray,
                   reference_data: np.ndarray = None,
-                  alpha: float = None) -> ScoreDriftResult:
+                  alpha: float | None = None) -> ScoreDriftResult:
         """
         Compare reference and test data using the two-sample KS test.
 

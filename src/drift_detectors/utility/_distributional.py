@@ -16,13 +16,13 @@ class HistDistanceDetector(DriftDetector):
     name: str = "abstract"
     default_threshold: float = 0.1
 
-    def __init__(self, reference_data: np.ndarray = None, threshold: float = None,
+    def __init__(self, reference_data: np.ndarray = None, threshold: float | None = None,
                  bins: int = 20, epsilon: float = 1e-8, online: bool = False):
         super().__init__(reference_data=reference_data, online=online)
         self._threshold = self.default_threshold if threshold is None else float(threshold)
         self._bins = int(bins)
         self._epsilon = float(epsilon)
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     def _hist(self, ref, test):
         return hist_pq(ref, test, self._bins, self._epsilon)
@@ -31,7 +31,7 @@ class HistDistanceDetector(DriftDetector):
         raise NotImplementedError
 
     def calculate(self, test_data: np.ndarray, reference_data: np.ndarray = None,
-                  threshold: float = None) -> ScoreDriftResult:
+                  threshold: float | None = None) -> ScoreDriftResult:
         ref = reference_data if reference_data is not None else self._reference_data
         if ref is None:
             raise ValueError("Reference data must be provided or initialized.")

@@ -23,7 +23,7 @@ class MMD(DriftDetector):
         super().__init__(reference_data=reference_data, online=online)
         self.gamma = gamma
         self.threshold = threshold
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     @staticmethod
     def _median_heuristic_gamma(X: np.ndarray, Y: np.ndarray, max_samples: int = 500) -> float:
@@ -42,7 +42,7 @@ class MMD(DriftDetector):
                   test_data: np.ndarray,
                   reference_data: np.ndarray = None,
                   gamma=None,
-                  threshold: float = None) -> ScoreDriftResult:
+                  threshold: float | None = None) -> ScoreDriftResult:
         ref = reference_data if reference_data is not None else self._reference_data
         if ref is None:
             raise ValueError("Reference data must be provided or set before calculation.")

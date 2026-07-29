@@ -24,7 +24,7 @@ class NNTwoSample(DriftDetector):
         self.alpha = alpha
         self.max_samples = int(max_samples)
         self.seed = int(seed)
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     def calculate(self, test_data, reference_data=None, alpha=None):
         ref = reference_data if reference_data is not None else self._reference_data

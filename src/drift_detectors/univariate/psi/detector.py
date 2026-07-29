@@ -24,7 +24,7 @@ class PSI(DriftDetector):
         super().__init__(reference_data=reference_data, online=online)
         self._threshold = threshold
         if online:
-            self._test_buffer = []
+            self._test_buffer: list = []
 
     def calculate(self,
                   test_data: np.ndarray,

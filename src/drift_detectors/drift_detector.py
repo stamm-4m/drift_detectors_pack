@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = Path(os.path.join(curr_dir))
@@ -65,7 +65,7 @@ class DriftDetector(ABC):
     def __init__(
         self,
         reference_data: np.ndarray | None = None,
-        online: bool | None = False,
+        online: bool = False,
     ) -> None:
         """
         Initialize the drift detector.

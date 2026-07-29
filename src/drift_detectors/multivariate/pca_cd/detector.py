@@ -31,13 +31,13 @@ class PCA_CD(DriftDetector):
         self._n_components = n_components
         self._csd_threshold = csd_threshold
         self._kl_threshold = kl_threshold
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     def calculate(self,
                   test_data: np.ndarray,
                   reference_data: np.ndarray = None,
-                  csd_threshold: float = None,
-                  kl_threshold: float = None) -> ScoreDriftResult:
+                  csd_threshold: float | None = None,
+                  kl_threshold: float | None = None) -> ScoreDriftResult:
         """
         Perform PCA-based drift detection on multivariate data.
 

@@ -17,7 +17,7 @@ class MMDLinear(DriftDetector):
         super().__init__(reference_data=reference_data, online=online)
         self.gamma = gamma
         self.threshold = float(threshold)
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     @staticmethod
     def _k(a, b, g):

@@ -17,7 +17,7 @@ class HDDDM(DriftDetector):
         super().__init__(reference_data=reference_data, online=online)
         self.threshold = float(threshold)
         self.bins = int(bins)
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     def calculate(self, test_data, reference_data=None, threshold=None):
         ref = reference_data if reference_data is not None else self._reference_data

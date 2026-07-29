@@ -27,12 +27,12 @@ class KDQTree(DriftDetector):
         self.alpha = alpha
         self.score_threshold = score_threshold
         self.use_fisher = use_fisher
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     def calculate(self,
                   test_data: np.ndarray,
                   reference_data: np.ndarray = None,
-                  alpha: float = None) -> ScoreDriftResult:
+                  alpha: float | None = None) -> ScoreDriftResult:
         ref = reference_data if reference_data is not None else self._reference_data
         if ref is None:
             raise ValueError("Reference data must be provided or set before calculation.")

@@ -27,7 +27,7 @@ class ADWIN(DriftDetector):
         self._adwin = AW_ALG(delta=self._delta)
 
     def calculate(
-        self, test_data: np.ndarray, delta: float = None
+        self, test_data: np.ndarray, delta: float | None = None
     ) -> StreamingDriftResult:
         """
         Perform drift detection on the incoming data using ADWIN.

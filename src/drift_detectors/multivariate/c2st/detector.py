@@ -35,7 +35,7 @@ class C2ST(DriftDetector):
         self.alpha = alpha
         self.max_samples = int(max_samples)
         self.seed = int(seed)
-        self._test_buffer = [] if online else None
+        self._test_buffer: list = []
 
     @staticmethod
     def _normal_sf(z: float) -> float:
@@ -44,7 +44,7 @@ class C2ST(DriftDetector):
     def calculate(self,
                   test_data: np.ndarray,
                   reference_data: np.ndarray = None,
-                  alpha: float = None) -> ScoreDriftResult:
+                  alpha: float | None = None) -> ScoreDriftResult:
         ref = reference_data if reference_data is not None else self._reference_data
         if ref is None:
             raise ValueError("Reference data must be provided or set before calculation.")

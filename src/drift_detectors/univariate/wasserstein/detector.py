@@ -1,7 +1,7 @@
 import numpy as np
 
-from drift_detectors.utility._stats import wasserstein_1d
 from drift_detectors.utility._distributional import HistDistanceDetector
+from drift_detectors.utility._stats import wasserstein_1d
 
 
 class Wasserstein(HistDistanceDetector):
