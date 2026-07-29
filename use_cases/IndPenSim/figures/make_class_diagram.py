@@ -1,85 +1,90 @@
 """Regenerate fig_class_diagram.png (class-diagram figure of the companion SoftwareX paper).
 
-Produces the layered class diagram of drift_detectors_pack:
-- DriftDetector (ABC) -> ScoreDriftResult / StreamingDriftResult /
-  PointwiseDriftResult
-- univariate / multivariate / model_based families
-- one leaf per detector with its public name.
+Shows the layered architecture of drift_detectors_pack: the abstract
+DriftDetector, the result dataclasses, and the three detector families
+(univariate, multivariate, model-based) with every detector grouped by
+sub-family. Each leaf folder ships detector.py + metadata.yaml + usage.md.
 """
 from __future__ import annotations
+
 from pathlib import Path
+
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+import matplotlib.patches as patches  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "fig_class_diagram.png"
 
-FIG_W, FIG_H = 11, 7
-
-fig, ax = plt.subplots(figsize=(FIG_W, FIG_H), dpi=200)
-ax.set_xlim(0, 100); ax.set_ylim(0, 70); ax.axis("off")
-
-
-def box(x, y, w, h, text, *, bg="#f5f5f5", edge="#444", fontsize=9, bold=False):
-    ax.add_patch(patches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.4,rounding_size=0.7",
-                                        facecolor=bg, edgecolor=edge, linewidth=1.0))
-    weight = "bold" if bold else "normal"
-    ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
-            fontsize=fontsize, fontweight=weight)
+fig, ax = plt.subplots(figsize=(12.5, 7.2), dpi=200)
+ax.set_xlim(0, 100)
+ax.set_ylim(14, 100)
+ax.axis("off")
 
 
-def conn(x1, y1, x2, y2, *, c="#666"):
-    ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
-                arrowprops=dict(arrowstyle="-", color=c, lw=0.9))
+def box(x, y, w, h, text, *, bg="#f5f5f5", edge="#444", fs=9, bold=False, va="center", pad=0.5):
+    ax.add_patch(patches.FancyBboxPatch(
+        (x, y), w, h, boxstyle=f"round,pad={pad},rounding_size=0.7",
+        facecolor=bg, edgecolor=edge, linewidth=1.0))
+    ty = y + h / 2 if va == "center" else y + h - 1.5
+    ax.text(x + w / 2 if va == "center" else x + 1.5, ty, text,
+            ha="center" if va == "center" else "left", va=va,
+            fontsize=fs, fontweight="bold" if bold else "normal", family="DejaVu Sans")
 
 
-# Top: public API
-box(36, 60, 28, 6, "from drift_detectors import ...", bg="#fff4e0", bold=True)
+def conn(x1, y1, x2, y2, c="#777"):
+    ax.annotate("", xy=(x2, y2), xytext=(x1, y1), arrowprops=dict(arrowstyle="-", color=c, lw=0.9))
 
-# Abstraction layer
-box(20, 50, 28, 6, "DriftDetector (ABC)", bg="#e8f1ff", bold=True)
-box(52, 50, 28, 6, "ScoreDriftResult / StreamingDriftResult / PointwiseDriftResult",
-    bg="#e8f1ff", fontsize=8)
-conn(50, 60, 34, 56)
-conn(50, 60, 66, 56)
 
-# Three families
-fams = [("univariate/",      6, 38, 24, 6),
-        ("multivariate/",   38, 38, 24, 6),
-        ("model_based/",    70, 38, 24, 6)]
-for name, x, y, w, h in fams:
-    box(x, y, w, h, name, bg="#e1f5e1", bold=True)
-    conn(34, 50, x + w / 2, y + h)
+def card(x, y, w, h, title, sections, *, bg, title_bg):
+    ax.add_patch(patches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.5,rounding_size=1.0",
+                                        facecolor=bg, edgecolor="#3a6b3a", linewidth=1.3))
+    box(x + 1.5, y + h - 6.5, w - 3, 5, title, bg=title_bg, edge="#3a6b3a", fs=10, bold=True)
+    cy = y + h - 9
+    for sub, items in sections:
+        ax.text(x + 2.5, cy, sub, fontsize=8.2, style="italic", color="#333", va="top", fontweight="bold")
+        cy -= 2.6
+        ax.text(x + 3.5, cy, "\n".join(items), fontsize=8.0, va="top", color="#111", linespacing=1.35)
+        cy -= 1.9 * len(items) + 1.6
 
-# Univariate leaves
-uni = ["PSI", "KSDetector", "Adwin", "PageHinkley", "HDDM_A", "EDDM"]
-for i, n in enumerate(uni):
-    box(2 + (i // 3) * 14, 24 - (i % 3) * 5, 12, 4, n, bg="#fafafa", fontsize=8)
-conn(18, 38, 14, 28)
 
-# Multivariate leaves
-mv = ["MMDDetector", "PCA_CD", "KDQTree"]
-for i, n in enumerate(mv):
-    box(36, 24 - i * 5, 14, 4, n, bg="#fafafa", fontsize=8)
-conn(50, 38, 43, 28)
+# ---- top: public API + abstraction layer
+box(36, 92, 28, 5.5, "from drift_detectors import ...", bg="#fff4e0", bold=True)
+box(14, 82, 30, 5.5, "DriftDetector  (abstract base class)", bg="#e8f1ff", bold=True)
+box(50, 82, 40, 5.5, "ScoreDriftResult / StreamingDriftResult / PointwiseDriftResult",
+    bg="#e8f1ff", fs=8)
+conn(50, 92, 29, 87.5)
+conn(50, 92, 70, 87.5)
 
-# Model-based leaves
-mb = ["ModelDisagreementMetric", "DisagreementMetric (ABC)"]
-for i, n in enumerate(mb):
-    box(70, 24 - i * 5, 24, 4, n, bg="#fafafa", fontsize=8)
+# ---- three family cards
+card(3, 22, 40, 56, "univariate/   (19 detectors)",
+     [("distributional (9, batch)",
+       ["PSI", "KS", "JensenShannon", "Hellinger", "TotalVariation",
+        "ChiSquare", "Bhattacharyya", "Wasserstein", "CramerVonMises"]),
+      ("sequential / error-based (10, streaming)",
+       ["ADWIN", "PageHinkley", "HDDM_A", "EDDM", "DDM",
+        "RDDM", "CUSUM", "ECDD", "KSWIN", "STEPD"])],
+     bg="#eef8ee", title_bg="#d7efd7")
 
-# Disagreement metric leaves
-dm = ["MSEDisagreement", "PearsonDisagreement", "SpearmanDisagreement"]
-for i, n in enumerate(dm):
-    box(70, 12 - i * 4, 24, 3.5, n, bg="#fff", fontsize=7.5)
-conn(82, 19, 82, 14)
-conn(82, 38, 82, 28)
+card(45, 22, 27, 56, "multivariate/   (10, batch)",
+     [("",
+       ["MMD", "MMDLinear", "PCA_CD", "PCAReconstruction",
+        "KDQTree", "EnergyDistance", "C2ST", "HDDDM",
+        "MultivariateKS", "NNTwoSample"])],
+     bg="#eef8ee", title_bg="#d7efd7")
 
-# Per-detector folder annotation
-ax.text(50, 4, "each leaf folder ships:  detector.py  +  metadata.yaml  +  usage.md",
-        ha="center", va="center", fontsize=8.5, style="italic", color="#555")
+card(74, 22, 23, 56, "model_based/   (1)",
+     [("ModelDisagreementMetric (MDM)", ["+ pluggable DisagreementMetric:"]),
+      ("error / correlation", ["MSE", "Pearson", "Spearman"]),
+      ("temporal (time-series)", ["DTW", "LaggedCorrelation", "ACFDivergence"])],
+     bg="#eef8ee", title_bg="#d7efd7")
 
-plt.tight_layout()
+for cx in (23, 58.5, 85.5):
+    conn(29, 82, cx, 78.2)
+
+ax.text(50, 18, "each detector folder ships:  detector.py  +  metadata.yaml  +  usage.md   —   NumPy-only runtime",
+        ha="center", va="center", fontsize=9, style="italic", color="#555")
+
 plt.savefig(OUT, dpi=200, bbox_inches="tight")
 print(f"wrote {OUT}")
