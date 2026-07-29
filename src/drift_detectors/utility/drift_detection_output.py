@@ -9,7 +9,7 @@ class ScoreDriftResult:
     """
     Single numeric score summarising drift plus a Boolean flag.
     """
-    score: float
+    score: float | None
     drift: bool
     details: dict[str, Any] = field(default_factory=dict)
 

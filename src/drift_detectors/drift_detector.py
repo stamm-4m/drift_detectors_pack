@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import yaml  # type: ignore[import-untyped]
+import yaml
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = Path(os.path.join(curr_dir))
