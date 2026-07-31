@@ -204,4 +204,3 @@ python tools/build_detector_pack.py
 Upload the resulting zip through the registry UI / `register` endpoint. Only
 folders that contain both `detector.py` and `metadata.yaml` are registered as
 detectors.
-
