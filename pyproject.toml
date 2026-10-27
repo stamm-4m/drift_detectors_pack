@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "stamm-drift-detectors"
-version = "0.5.2"
+version = "0.5.3"
 description = "Open-source drift detection toolkit for univariate and multivariate data, with batch and streaming detectors. Designed for low-resource MLOps deployments and reproducible scientific research."
 readme = "README.md"
 license = { text = "Apache-2.0" }

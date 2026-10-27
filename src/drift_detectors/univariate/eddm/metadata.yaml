@@ -1,6 +1,6 @@
 name: "Early Drift Detection Method"
 acronym: "EDDM"
-version: "1.0"
+version: "1.1"
 type: "univariate"
 mode: "streaming"
 input_kind: "error"
@@ -25,6 +25,11 @@ parameters:
     description: "Ratio threshold under which drift is signalled."
   min_n_errors:
     description: "Minimum number of accumulated errors required before drift can fire."
+  min_consecutive_drift_signals:
+    description: >
+      Number of consecutive errors with the distance ratio below drift_level
+      needed to signal drift (default 3); avoids false alarms on independent
+      error streams.
 
 output:
   description: >

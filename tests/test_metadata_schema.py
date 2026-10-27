@@ -41,3 +41,33 @@ def test_input_kind_consistent_with_inputs(path):
         assert "test_data" in inputs
     if "reference_data" in inputs:
         assert meta["input_kind"] == "signal"
+
+
+# ---------------------------------------------------------------- 0.5.3
+CALLER_SUPPLIED = {"reference_data", "online", "models"}
+
+
+def test_every_constructor_parameter_is_documented():
+    """A parameter of ``__init__`` that changes the result must be in metadata.yaml
+    (``reference_data``, ``online`` and ``models`` are supplied by the caller)."""
+    import ast
+    import pathlib
+
+    import yaml
+
+    root = pathlib.Path(__file__).resolve().parents[1] / "src" / "drift_detectors"
+    missing = {}
+    for meta in sorted(root.rglob("metadata.yaml")):
+        det = meta.parent / "detector.py"
+        if not det.exists():
+            continue
+        names = set()
+        for cls in [n for n in ast.parse(det.read_text()).body if isinstance(n, ast.ClassDef)]:
+            for f in cls.body:
+                if isinstance(f, ast.FunctionDef) and f.name == "__init__":
+                    names |= {a.arg for a in f.args.args[1:]} | {a.arg for a in f.args.kwonlyargs}
+        documented = set((yaml.safe_load(meta.read_text()).get("parameters") or {}).keys())
+        gap = names - documented - CALLER_SUPPLIED
+        if gap:
+            missing[str(meta.parent.relative_to(root))] = sorted(gap)
+    assert not missing, f"constructor parameters missing in metadata.yaml: {missing}"

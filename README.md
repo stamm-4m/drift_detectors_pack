@@ -9,7 +9,18 @@ framework into which this package is integrated.
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python >= 3.10](https://img.shields.io/badge/python-%3E%3D3.10-blue.svg)](https://www.python.org/)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-green.svg)](.github/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.5.2-orange.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.5.3-orange.svg)](pyproject.toml)
+
+## What's new in 0.5.3
+
+* Every constructor parameter that changes a result is documented in
+  `metadata.yaml`: `score_threshold` and `use_fisher` (KDQ-tree),
+  `min_consecutive_drift_signals` (EDDM) and `seed` (PCA reconstruction).
+  The KDQ-tree output description now says that drift is
+  `score >= score_threshold` (it said `>= alpha`). No code change.
+* New test: every `__init__` parameter of a detector is in its metadata,
+  except `reference_data`, `online` and `models`, which are supplied by the
+  caller.
 
 ## What's new in 0.5.2
 

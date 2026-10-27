@@ -1,6 +1,6 @@
 name: "KDQ-tree Drift Detection"
 acronym: "KDQ"
-version: "1.0"
+version: "1.1"
 type: "multivariate"
 mode: "batch"
 input_kind: "signal"
@@ -25,8 +25,16 @@ parameters:
     description: "Method used in the KS test (e.g., 'asymp', 'exact', or 'auto')."
   alpha:
     description: >
-      Significance threshold for the average p-value in a neighborhood.
+      Significance threshold for the p-value of a neighborhood.
       A lower alpha increases sensitivity to subtle changes.
+  score_threshold:
+    description: >
+      Drift is flagged when the proportion of neighborhoods with p-value below
+      alpha is at least this value (default 0.25).
+  use_fisher:
+    description: >
+      How the per-dimension KS p-values of a neighborhood are combined: True
+      (default) = Fisher's method; False = their mean.
 
 output:
   description: >
@@ -42,7 +50,7 @@ output:
         suggest stronger evidence of distributional shift.
     drift:
       description: >
-        Boolean flag indicating whether drift is detected (True if score >= alpha).
+        Boolean flag indicating whether drift is detected (True if score >= score_threshold).
     details:
       description: >
         Metadata including the number of neighborhoods evaluated, method settings,
