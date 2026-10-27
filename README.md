@@ -9,7 +9,38 @@ framework into which this package is integrated.
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python >= 3.10](https://img.shields.io/badge/python-%3E%3D3.10-blue.svg)](https://www.python.org/)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-green.svg)](.github/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.5.0-orange.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.5.2-orange.svg)](pyproject.toml)
+
+## What's new in 0.5.2
+
+* **MDM `scale`**: the scale of the metrics that use one (MSE = RMSE / scale,
+  DTW) is configurable: `"window"` (default, as before: standard deviation of the
+  predictions given to `calculate`, which saturates at 1 on short windows or
+  flat signals), `"reference"` (standard deviation of past predictions passed
+  as `reference_data`, e.g. the run so far) or a positive number (e.g. the
+  expected range of the predicted variable).
+* **MDM `decision`**: the family that gives `score` and `drift`: `"error"`
+  (default, as before), `"correlation"`, `"temporal"` or `"any"`.
+* **Undefined correlations are reported, not invented**: Pearson, Spearman,
+  lagged correlation and ACF divergence return NaN when a series is constant
+  (until 0.5.1 Pearson / Spearman gave 0.5, which looked like a real value).
+  MDM averages over the defined pairs, counts the others in
+  `details["undefined_pairs"]`, and returns `score=None, drift=False` with
+  `details["status"] = "decision_undefined"` when the deciding family is not
+  defined.
+* The metadata of `model_disagreement` documents `scale` and `decision`; the
+  `disagreement_metrics` catalogue lists the six shipped metrics.
+
+## What's new in 0.5.1
+
+* Every `metadata.yaml` declares **`input_kind`**, the kind of data the
+  detector consumes: `signal` (process values: distributional, sequential and
+  multivariate detectors), `error` (a binary error stream of a model, 1 =
+  error; needs ground truth: DDM, EDDM, RDDM, STEPD) or `predictions` (the
+  outputs of two or more co-deployed models: MDM). Platforms such as the
+  STAMM model registry use it to decide which data to feed each detector.
+* `tests/test_metadata_schema.py` checks the required metadata keys of every
+  detector.
 
 ## What's new in 0.5.0
 

@@ -3,6 +3,7 @@ acronym: "ADWIN"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "signal"
 
 description: >
   ADaptive WINdowing (ADWIN) is a streaming drift detection algorithm for 

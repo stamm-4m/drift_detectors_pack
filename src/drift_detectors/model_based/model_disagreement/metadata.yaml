@@ -1,8 +1,9 @@
 name: "Model Disagreement Metric"
 acronym: "MDM"
-version: "1.2"
+version: "1.3"
 type: "model_based"
 mode: "batch"
+input_kind: "predictions"
 
 description: >
   Pair-wise output-level disagreement detector for ensembles of co-deployed
@@ -28,7 +29,17 @@ parameters:
                   [MSEDisagreement(), PearsonDisagreement(), SpearmanDisagreement()]."
   threshold:
     description: "Disagreement above which drift is flagged. Compared against
-                  the error-family aggregate (score field)."
+                  the aggregate of the family chosen by decision (score field)."
+  scale:
+    description: "Scale of the metrics that use one (MSE = RMSE / scale, DTW;
+                  capped at 1): 'window' (default: standard deviation of the predictions
+                  of the call; saturates on short windows or flat signals),
+                  'reference' (standard deviation of reference_data, one array of
+                  past predictions per model) or a positive number (fixed scale,
+                  e.g. the expected range of the predicted variable)."
+  decision:
+    description: "Family that gives score and drift: 'error' (default),
+                  'correlation', 'temporal' or 'any' (largest defined family)."
 
 output:
   description: >

@@ -3,6 +3,7 @@ acronym: "STEPD"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "error"
 
 description: >
   Compares accuracy over a recent window to accuracy over older observations with a two-proportion z-test; warning and drift fire as the p-value drops. Binary error stream.

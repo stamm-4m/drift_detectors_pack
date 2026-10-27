@@ -3,6 +3,7 @@ acronym: "KS"
 version: "1.0"
 type: "univariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   The Kolmogorov–Smirnov (KS) test is a non-parametric method for comparing the

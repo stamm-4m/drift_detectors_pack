@@ -3,6 +3,7 @@ acronym: "PCA-CD"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   PCA-CD (PCA-based Change Detection) detects drift in multivariate data by projecting

@@ -3,6 +3,7 @@ acronym: "PH"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "signal"
 
 description: >
   The Page-Hinkley test is a sequential change-point detector that tracks the

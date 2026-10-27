@@ -3,6 +3,7 @@ acronym: "MMD"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Maximum Mean Discrepancy (MMD) is a nonparametric kernel-based method 

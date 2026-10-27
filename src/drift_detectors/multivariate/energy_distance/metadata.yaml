@@ -3,6 +3,7 @@ acronym: "EnergyDistance"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Energy Distance is a nonparametric, distance-based two-sample test for

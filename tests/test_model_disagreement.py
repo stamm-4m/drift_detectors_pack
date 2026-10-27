@@ -127,3 +127,81 @@ class TestDisagreementMetricsIndividually(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ---------------------------------------------------------------- 0.5.2
+import numpy as _np
+import pytest as _pytest
+
+from drift_detectors import (
+    ACFDivergence as _ACF,
+    LaggedCorrelationDisagreement as _Lag,
+    ModelDisagreementMetric as _MDM,
+    MSEDisagreement as _MSE,
+    PearsonDisagreement as _P,
+    SpearmanDisagreement as _S,
+)
+
+
+def _flat_and_ramp(n=50):
+    t = _np.linspace(0.0, 1.0, n)
+    return _np.zeros(n), 0.01 * t           # lag phase: one model constant, the other almost
+
+
+def test_correlation_with_a_constant_series_is_undefined():
+    a, b = _flat_and_ramp()
+    assert _np.isnan(_P().pair(a, b))
+    assert _np.isnan(_S().pair(a, b))
+    assert _np.isnan(_Lag(max_lag=3).pair(a, b))
+    assert _np.isnan(_ACF(max_lag=3).pair(a, b))
+
+
+def test_undefined_correlation_is_reported_not_counted():
+    a, b = _flat_and_ramp()
+    res = _MDM(decision="correlation").calculate(predictions=[a, b])
+    assert res.score is None and res.drift is False
+    assert res.details["status"] == "decision_undefined"
+    assert res.details["undefined_pairs"]["pearson"] == 1
+    assert res.details["metric_means"]["pearson"] is None
+
+
+def test_window_scale_saturates_and_fixed_scale_does_not():
+    t = _np.linspace(0.0, 10.0, 50)
+    y1 = 20.0 + 0.01 * t                     # flat signal, small offset between the models
+    y2 = y1 + 0.05
+    window = _MDM(metrics=[_MSE()]).calculate(predictions=[y1, y2])
+    fixed = _MDM(metrics=[_MSE()], scale=10.0).calculate(predictions=[y1, y2])
+    assert window.score == _pytest.approx(1.0)          # behaviour up to 0.5.1 (default)
+    assert fixed.score == _pytest.approx(0.005, rel=1e-6)
+    assert window.details["scale_source"] == "window"
+    assert fixed.details["scale_source"] == "fixed" and fixed.drift is False
+
+
+def test_reference_scale_uses_past_predictions():
+    rng = _np.random.default_rng(0)
+    past = [rng.normal(0, 5, 200), rng.normal(0, 5, 200)]
+    y1 = _np.zeros(30)
+    y2 = y1 + 1.0
+    res = _MDM(metrics=[_MSE()], scale="reference").calculate(predictions=[y1, y2], reference_data=past)
+    expected = 1.0 / float(_np.std(_np.concatenate(past)))
+    assert res.score == _pytest.approx(expected, rel=1e-9)
+    with _pytest.raises(ValueError):
+        _MDM(scale="reference").calculate(predictions=[y1, y2])
+
+
+def test_decision_any_and_family():
+    t = _np.linspace(0.0, 1.0, 40)
+    y1, y2 = t, 1.0 - t                       # same magnitude spread, opposite trend
+    res_any = _MDM(scale=100.0, decision="any").calculate(predictions=[y1, y2])
+    res_err = _MDM(scale=100.0, decision="error").calculate(predictions=[y1, y2])
+    assert res_err.drift is False and res_any.drift is True
+    assert res_any.score == _pytest.approx(res_any.details["score_by_kind"]["correlation"])
+    with _pytest.raises(ValueError):
+        _MDM(decision="temporal").calculate(predictions=[y1, y2])
+
+
+def test_bad_scale_refused():
+    with _pytest.raises(ValueError):
+        _MDM(scale="median")
+    with _pytest.raises(ValueError):
+        _MDM(scale=0)

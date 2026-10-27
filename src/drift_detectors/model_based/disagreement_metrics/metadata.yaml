@@ -3,6 +3,7 @@ acronym: "disagreement_metrics"
 version: "1.0"
 type: "model_based"
 mode: "batch"
+input_kind: "predictions"
 
 description: >
   A catalogue of pair-wise model-disagreement metrics that can be plugged
@@ -21,9 +22,20 @@ shipped_metrics:
   MSEDisagreement:
     description: "Root-MSE between two prediction vectors, scale-normalised."
   PearsonDisagreement:
-    description: "(1 - Pearson linear correlation) / 2, in [0, 1]."
+    description: "(1 - Pearson linear correlation) / 2, in [0, 1]. NaN (not
+                  defined) when a series is constant."
   SpearmanDisagreement:
-    description: "(1 - Spearman rank correlation) / 2, in [0, 1]."
+    description: "(1 - Spearman rank correlation) / 2, in [0, 1]. NaN (not
+                  defined) when a series is constant."
+  DTWDisagreement:
+    description: "Dynamic time warping distance between the two series,
+                  scale-normalised (temporal family)."
+  LaggedCorrelationDisagreement:
+    description: "1 - best absolute cross-correlation over time lags; NaN when
+                  not defined at any lag (temporal family)."
+  ACFDivergence:
+    description: "Distance between the autocorrelation functions; NaN when a
+                  series is constant (temporal family)."
 
 references:
   - "Suarez, C. et al. (2026). STAMM: Soft sensor moniToring and mAintenance

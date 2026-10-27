@@ -3,6 +3,7 @@ acronym: "KSWIN"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "signal"
 
 description: >
   Keeps a sliding window and periodically runs a two-sample KS test between the newest samples and a random sample of older ones; drift fires when the p-value falls below alpha. Any numeric value stream.

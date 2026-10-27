@@ -34,6 +34,22 @@ from drift_detectors.model_based.disagreement_metrics import (
 from drift_detectors.utility.drift_detection_output import ScoreDriftResult
 
 
+def _check_scale(scale):
+    if isinstance(scale, str):
+        if scale not in ("window", "reference"):
+            raise ValueError(f"scale must be 'window', 'reference' or a positive number, not {scale!r}")
+        return scale
+    value = float(scale)
+    if not np.isfinite(value) or value <= 0:
+        raise ValueError(f"scale must be a positive number, not {scale!r}")
+    return value
+
+
+def _nanmean(values) -> float | None:
+    vals = [float(v) for v in values if v is not None and np.isfinite(v)]
+    return float(np.mean(vals)) if vals else None
+
+
 def _default_metrics() -> list[DisagreementMetric]:
     """Default trio: magnitude (MSE), linear correlation, rank correlation."""
     return [MSEDisagreement(), PearsonDisagreement(), SpearmanDisagreement()]
@@ -50,6 +66,20 @@ class ModelDisagreementMetric(DriftDetector):
         register your own by subclassing ``DisagreementMetric``.
     threshold : float, default=0.25
         Aggregate disagreement above which a drift flag is raised.
+    scale : "window" | "reference" | float, default="window"
+        Scale of the metrics that use one (MSE: RMSE / scale and DTW, both
+        capped at 1).
+        ``"window"``: standard deviation of the predictions given to
+        ``calculate`` (behaviour up to 0.5.1; saturates on short windows or
+        flat signals). ``"reference"``: standard deviation of
+        ``reference_data`` (one array of past predictions per model, e.g. the
+        run so far). A positive number: that fixed scale (e.g. the expected
+        range of the predicted variable).
+    decision : str, default="error"
+        Which aggregate gives ``score`` and ``drift``: a metric family
+        (``"error"``, ``"correlation"``, ``"temporal"``) or ``"any"`` (the
+        largest defined family aggregate). With ``"error"`` and no
+        error-family metric, the largest family is used (as up to 0.5.1).
     online : bool, default=False
         Reserved for streaming use; currently behaves as ``False``.
 
@@ -70,10 +100,15 @@ class ModelDisagreementMetric(DriftDetector):
         online: bool = False,
         # legacy parameter kept for backwards compatibility:
         models: Sequence | None = None,
+        *,
+        scale: str | float = "window",
+        decision: str = "error",
     ) -> None:
         super().__init__(reference_data=None, online=online)
         self._metrics: list[DisagreementMetric] = list(metrics) if metrics else _default_metrics()
         self._threshold = float(threshold)
+        self._scale = _check_scale(scale)
+        self._decision = str(decision)
         # ``models`` is not used by the new predictions API; we keep the
         # parameter on the constructor signature so that pre-v0.4.0 user
         # code continues to import without crashing. Predictions are now
@@ -104,7 +139,10 @@ class ModelDisagreementMetric(DriftDetector):
             These are the per-batch simulations exported by the model
             registry; MDM does not need access to the model objects
             themselves.
-        test_data, reference_data
+        reference_data : sequence of np.ndarray, optional
+            Only with ``scale="reference"``: one array of past predictions
+            per model (any length); their standard deviation is the scale.
+        test_data
             Unused by this detector; kept on the signature so that the
             shipped ``BenchmarkRunner`` and dashboards can call every
             detector with the same ``calculate(test_data, reference_data)``
@@ -129,11 +167,30 @@ class ModelDisagreementMetric(DriftDetector):
 
         thr = self._threshold if threshold is None else float(threshold)
 
-        scale = float(np.std(preds))
+        # Scale of the metrics that use one (MSE, DTW; 0.5.2: configurable).
+        if self._scale == "window":
+            scale = float(np.std(preds))
+            scale_source = "window"
+        elif self._scale == "reference":
+            if reference_data is None:
+                raise ValueError("scale='reference' needs reference_data: one array of past "
+                                 "predictions per model")
+            ref = np.concatenate([np.asarray(r, dtype=float).ravel() for r in reference_data])
+            ref = ref[np.isfinite(ref)]
+            if ref.size < 2:
+                raise ValueError("scale='reference': fewer than 2 reference predictions")
+            scale = float(np.std(ref))
+            scale_source = "reference"
+        else:
+            scale = float(self._scale)
+            scale_source = "fixed"
+        scale_used = scale
         if not np.isfinite(scale) or scale <= 1e-12:
-            scale = 1.0
+            scale_used = 1.0
+            scale_source += " (spread 0: 1.0 used)"
 
-        # Per-pair, per-metric matrix
+        # Per-pair, per-metric matrix; NaN = not defined for that pair
+        # (e.g. a correlation with a constant series, 0.5.2)
         pair_matrices: dict[str, np.ndarray] = {
             m.name: np.zeros((n_models, n_models), dtype=float) for m in self._metrics
         }
@@ -142,45 +199,54 @@ class ModelDisagreementMetric(DriftDetector):
             for j in range(i + 1, n_models):
                 a, b = preds[i], preds[j]
                 for m in self._metrics:
-                    v = float(m.pair(a, b, scale=scale))
+                    v = float(m.pair(a, b, scale=scale_used))
                     per_metric_values[m.name].append(v)
                     pair_matrices[m.name][i, j] = pair_matrices[m.name][j, i] = v
 
-        # Per-metric means (over pairs)
-        per_metric_means: dict[str, float] = {
-            n: float(np.mean(v)) if v else 0.0 for n, v in per_metric_values.items()
+        # Per-metric means over the pairs where the metric is defined
+        per_metric_means: dict[str, float | None] = {
+            n: _nanmean(v) for n, v in per_metric_values.items()
         }
+        undefined_pairs = {n: int(sum(1 for x in v if not np.isfinite(x)))
+                           for n, v in per_metric_values.items()}
 
-        # Aggregate BY KIND: mean over metrics of the same family, never across.
-        # ``score_by_kind`` is the user-facing summary -- one number per family.
-        kind_buckets: dict[str, list[float]] = {}
+        # Aggregate BY KIND: mean over the defined metrics of the same family,
+        # never across families. ``score_by_kind`` is the user-facing summary.
+        kind_buckets: dict[str, list] = {}
         for m in self._metrics:
             kind_buckets.setdefault(m.kind, []).append(per_metric_means[m.name])
-        score_by_kind: dict[str, float] = {
-            k: float(np.mean(vs)) if vs else 0.0 for k, vs in kind_buckets.items()
-        }
-        # Headline ``score`` field: the error-family aggregate. The error
-        # family answers the operational question -- "are the soft sensors
-        # producing the same number?". Correlation-family disagreements
-        # are reported separately in ``details['score_by_kind']`` and as a
-        # complementary signal in the per-metric breakdown.
-        primary = score_by_kind.get("error")
-        if primary is None:
-            # No error-family metrics configured -- fall back to the largest
-            # per-kind aggregate so that ``score`` and ``drift`` stay meaningful.
-            primary = max(score_by_kind.values()) if score_by_kind else 0.0
+        score_by_kind: dict[str, float | None] = {k: _nanmean(vs) for k, vs in kind_buckets.items()}
+        defined = {k: v for k, v in score_by_kind.items() if v is not None}
 
-        return ScoreDriftResult(
-            score=float(primary),
-            drift=float(primary) >= thr,
-            details={
-                "threshold": thr,
-                "n_models": n_models,
-                "n_samples": n_samples,
-                "metrics": list(per_metric_means.keys()),
-                "metric_means": per_metric_means,
-                "score_by_kind": score_by_kind,
-                "pairwise": {n: pair_matrices[n].tolist() for n in pair_matrices},
-                "mode": "online" if self.is_online() else "offline",
-            },
-        )
+        # Headline ``score``: the family chosen by ``decision`` (default the
+        # error family: "are the soft sensors producing the same number?").
+        decision = self._decision
+        if decision == "any":
+            primary = max(defined.values()) if defined else None
+        elif decision == "error" and "error" not in score_by_kind:
+            # No error-family metric configured: the largest family (as up to 0.5.1)
+            primary = max(defined.values()) if defined else None
+        elif decision in score_by_kind:
+            primary = score_by_kind[decision]
+        else:
+            raise ValueError(f"decision {decision!r}: no metric of that family "
+                             f"(families: {sorted(score_by_kind)}, or 'any')")
+        details = {
+            "threshold": thr,
+            "decision": decision,
+            "scale": self._scale,
+            "scale_source": scale_source,
+            "scale_value": scale,
+            "n_models": n_models,
+            "n_samples": n_samples,
+            "metrics": list(per_metric_means.keys()),
+            "metric_means": per_metric_means,
+            "undefined_pairs": undefined_pairs,
+            "score_by_kind": score_by_kind,
+            "pairwise": {n: pair_matrices[n].tolist() for n in pair_matrices},
+            "mode": "online" if self.is_online() else "offline",
+        }
+        if primary is None:
+            details["status"] = "decision_undefined"
+            return ScoreDriftResult(score=None, drift=False, details=details)
+        return ScoreDriftResult(score=float(primary), drift=float(primary) >= thr, details=details)

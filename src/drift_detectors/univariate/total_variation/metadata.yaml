@@ -3,6 +3,7 @@ acronym: "TotalVariation"
 version: "1.0"
 type: "univariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Bounded [0, 1] total-variation distance: half the L1 distance between the reference and test histograms. Implemented in pure NumPy on a common histogram (or empirical CDF)

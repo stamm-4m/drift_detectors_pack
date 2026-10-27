@@ -30,12 +30,16 @@ class LaggedCorrelationDisagreement(DisagreementMetric):
             return 0.0
         a, b = a[:n], b[:n]
         lim = min(self.max_lag, n - 2)
-        best = 0.0
+        best = None
         for lag in range(-lim, lim + 1):
             if lag >= 0:
                 x, y = a[lag:], b[:n - lag]
             else:
                 x, y = a[:n + lag], b[-lag:]
             if len(x) >= 2:
-                best = max(best, abs(_pearson(x, y)))
+                r = _pearson(x, y)
+                if np.isfinite(r):                 # undefined lags (constant part) are skipped
+                    best = abs(r) if best is None else max(best, abs(r))
+        if best is None:
+            return float("nan")                    # not defined at any lag (constant series)
         return float(np.clip(1.0 - best, 0.0, 1.0))

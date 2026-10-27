@@ -3,6 +3,7 @@ acronym: "DDM"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "error"
 
 description: >
   Monitors the online error rate and its standard deviation; warns and then signals drift when the error rate rises significantly above its minimum. Binary error stream.

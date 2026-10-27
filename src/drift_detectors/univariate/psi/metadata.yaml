@@ -3,6 +3,7 @@ acronym: "PSI"
 version: "1.0"
 type: "univariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   The Population Stability Index (PSI) measures shifts in the distribution 

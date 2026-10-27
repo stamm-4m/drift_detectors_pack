@@ -3,6 +3,7 @@ acronym: "ECDD"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "signal"
 
 description: >
   Exponentially weighted moving-average control chart with a time-varying control limit; drift fires when the EWMA departs from the running mean by more than L sigma. Any numeric value stream.

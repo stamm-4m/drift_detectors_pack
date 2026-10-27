@@ -3,6 +3,7 @@ acronym: "MMDLinear"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Unbiased linear-time estimate of MMD^2 with an RBF kernel; an O(n) alternative to the quadratic MMD for large batches. Implemented in pure NumPy.

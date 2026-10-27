@@ -37,5 +37,7 @@ class ACFDivergence(DisagreementMetric):
         n_lags = min(self.max_lag, len(a) // 2, len(b) // 2)
         if n_lags < 1:
             return 0.0
+        if np.ptp(a) == 0 or np.ptp(b) == 0:
+            return float("nan")    # the autocorrelation of a constant series is not defined
         d = np.sqrt(np.mean((_acf(a, n_lags) - _acf(b, n_lags)) ** 2))
         return float(np.clip(d, 0.0, 1.0))

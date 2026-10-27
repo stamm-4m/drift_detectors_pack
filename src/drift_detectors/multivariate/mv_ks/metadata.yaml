@@ -3,6 +3,7 @@ acronym: "MultivariateKS"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Projects both samples onto many random 1-D directions and runs a univariate KS test on each; the score is the fraction of projections showing significant drift. Implemented in pure NumPy.

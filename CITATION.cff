@@ -8,8 +8,8 @@ abstract: >
   designed to be lightweight, dependency-frugal, and reproducible, making
   it well suited for research and for MLOps deployments.
 type: software
-version: "0.5.0"
-date-released: 2026-07-08
+version: "0.5.2"
+date-released: 2026-10-27
 license: Apache-2.0
 repository-code: "https://github.com/stamm-4m/drift_detectors_pack"
 authors:

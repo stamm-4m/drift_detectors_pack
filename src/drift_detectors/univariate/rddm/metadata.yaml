@@ -3,6 +3,7 @@ acronym: "RDDM"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "error"
 
 description: >
   A reactive DDM variant with more sensitive thresholds and periodic re-baselining of the error-rate minimum when a concept stays stable too long. Binary error stream.

@@ -3,6 +3,7 @@ acronym: "Bhattacharyya"
 version: "1.0"
 type: "univariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Bhattacharyya distance -ln(sum sqrt(p*q)); 0 = identical, grows without bound as the histograms separate. Implemented in pure NumPy on a common histogram (or empirical CDF)

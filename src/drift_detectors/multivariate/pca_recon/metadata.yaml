@@ -3,6 +3,7 @@ acronym: "PCAReconstruction"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Fits PCA on the reference and compares reference vs test reconstruction-error distributions with a KS test; sensitive to drift outside the principal subspace. Implemented in pure NumPy.

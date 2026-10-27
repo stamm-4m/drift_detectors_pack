@@ -73,7 +73,7 @@ Detector-specific keys (`p_value`, `gamma`, `warning`, `metric_means`,
 ## 3. Self-describing metadata
 
 Each detector ships a `metadata.yaml` next to its `detector.py`. The schema
-has six top-level keys:
+has the following top-level keys:
 
 ```yaml
 name:        "Population Stability Index"
@@ -81,6 +81,7 @@ acronym:     "PSI"
 version:     "1.0"
 type:        "univariate"           # univariate | multivariate | model_based
 mode:        "batch"                # batch | streaming
+input_kind:  "signal"               # signal | error | predictions (see below)
 description: >
   ...natural-language summary, several sentences...
 inputs:                             # named inputs the calculate() call expects
@@ -98,6 +99,15 @@ output:                             # what the result dataclass carries
 references:                         # bibliographic anchors
   - "Page, E. S. (1954). Continuous inspection schemes. Biometrika 41, 100-115."
 ```
+
+`input_kind` is the kind of data `calculate()` expects:
+
+* `signal` -- values of the monitored variable(s) themselves (sensor or
+  process values), compared with a reference or followed as a stream;
+* `error` -- a binary error stream of a model (1 = error, 0 = correct;
+  values above 0.5 count as errors), which needs ground truth;
+* `predictions` -- the outputs of two or more co-deployed models
+  (`predictions=[y1, y2, ...]`).
 
 Two helpers consume this metadata:
 
@@ -143,7 +153,9 @@ does).
 1. Create a folder under `src/drift_detectors/<family>/<your_name>/`.
 2. Add `detector.py` — class subclassing `DriftDetector`, implementing
    `calculate(...)` and returning the appropriate result dataclass.
-3. Add `metadata.yaml` — follow the schema in §3.
+3. Add `metadata.yaml` — follow the schema in §3, including `input_kind`
+   (the STAMM model registry uses it to decide which data to feed the
+   detector).
 4. Add `usage.md` — a minimal worked example, mock data only.
 5. Re-export the class from `drift_detectors/__init__.py` and add it to
    `__all__`.

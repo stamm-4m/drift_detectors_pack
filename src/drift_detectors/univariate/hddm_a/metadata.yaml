@@ -3,6 +3,7 @@ acronym: "HDDM-A"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "signal"
 
 description: >
   HDDM-A monitors a univariate stream by maintaining a long-term mean estimator

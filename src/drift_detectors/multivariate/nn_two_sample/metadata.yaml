@@ -3,6 +3,7 @@ acronym: "NNTwoSample"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   Pools the (balanced) reference and test samples and tests whether each point's k nearest neighbours share its label more often than chance; a nonparametric two-sample test. Implemented in pure NumPy.

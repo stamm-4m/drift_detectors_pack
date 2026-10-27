@@ -3,6 +3,7 @@ acronym: "CUSUM"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "signal"
 
 description: >
   Two-sided standardized CUSUM: accumulates positive and negative standardized deviations beyond a slack and fires when either exceeds a threshold. Any numeric value stream.

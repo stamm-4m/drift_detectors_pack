@@ -3,6 +3,7 @@ acronym: "KDQ"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   KDQ-tree is a neighborhood-based multivariate drift detection method that compares

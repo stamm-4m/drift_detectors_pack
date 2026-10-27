@@ -9,9 +9,11 @@ from drift_detectors.model_based.disagreement_metrics.base import DisagreementMe
 class MSEDisagreement(DisagreementMetric):
     """Root-MSE between two prediction vectors, normalised by a scale factor.
 
-    The default scale is the standard deviation of the prediction stack
-    (set externally by the orchestrator), so the metric reads as
-    "fraction of the typical prediction spread".
+    The scale is set by the orchestrator (ModelDisagreementMetric
+    ``scale``): by default the standard deviation of the prediction stack
+    of the window, so the metric reads as "fraction of the typical
+    prediction spread"; a fixed value or the spread of reference
+    predictions can be used instead (0.5.2).
     """
     name = "mse"
     kind = "error"

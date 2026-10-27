@@ -3,6 +3,7 @@ acronym: "C2ST"
 version: "1.0"
 type: "multivariate"
 mode: "batch"
+input_kind: "signal"
 
 description: >
   The Classifier Two-Sample Test detects multivariate drift by training a

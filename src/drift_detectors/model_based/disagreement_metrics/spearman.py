@@ -25,4 +25,8 @@ class SpearmanDisagreement(DisagreementMetric):
     kind = "correlation"
 
     def pair(self, y_i, y_j, *, scale=1.0):
-        return float(np.clip(1.0 - _pearson(_rankdata(y_i), _rankdata(y_j)), 0.0, 2.0)) / 2.0
+        """(1 - rho) / 2 in [0, 1]; NaN when rho is not defined (constant series)."""
+        rho = _pearson(_rankdata(y_i), _rankdata(y_j))
+        if not np.isfinite(rho):
+            return float("nan")
+        return float(np.clip(1.0 - rho, 0.0, 2.0)) / 2.0

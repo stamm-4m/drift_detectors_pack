@@ -3,6 +3,7 @@ acronym: "EDDM"
 version: "1.0"
 type: "univariate"
 mode: "streaming"
+input_kind: "error"
 
 description: >
   EDDM monitors the distance between consecutive errors in a binary error
